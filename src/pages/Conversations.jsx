@@ -48,7 +48,12 @@ export function Conversations() {
   if (!activeConv) return null;
 
   return (
-    <div className="conv-layout">
+    <div className="page active" id="p-conv" style={{ padding: 0 }}>
+      <div className="topbar" style={{ padding: '13px 18px', borderBottom: '1px solid var(--border)' }}>
+        <div style={{ fontFamily: "'Clash Display', sans-serif", fontSize: '17px', fontWeight: '600' }}>Conversations</div>
+        <Tag color="green">2 active</Tag>
+      </div>
+      <div className="conv-layout">
       <div className="conv-list">
         <div className="cl-head">All conversations</div>
         {Object.values(convData).map(c => (
@@ -135,6 +140,7 @@ export function Conversations() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

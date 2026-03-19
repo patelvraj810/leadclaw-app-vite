@@ -10,6 +10,15 @@ export function Leads() {
 
   return (
     <div className="page active" id="p-leads">
+      <div className="topbar">
+        <div>
+          <div className="tb-title">Leads</div>
+          <div className="tb-sub">All leads captured by your AI agent</div>
+        </div>
+        <div style={{ display: 'flex', gap: '9px', alignItems: 'center' }}>
+          <button className="btn btn-dark btn-sm">+ Add lead</button>
+        </div>
+      </div>
       <div className="leads-toolbar">
         <div className="srch">
           <input type="text" placeholder="Search leads..." />

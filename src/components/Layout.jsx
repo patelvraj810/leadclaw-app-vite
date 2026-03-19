@@ -8,7 +8,6 @@ export function Layout() {
     <div className="app">
       <Sidebar />
       <main className="app-main">
-        <Topbar />
         <Outlet />
       </main>
     </div>

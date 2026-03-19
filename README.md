@@ -15,17 +15,17 @@ This repository contains the LeadClaw V2 React application, fully synchronized w
 ## Visual Verification
 
 ### Verification Recording
-![V2 Verification](docs/media/verification_recording.webp)
+![V2 Verification Final](docs/media/sidebar_v2_final.webp)
 
 ### UI Highlights
 
 | Landing Page | Dashboard |
 | :---: | :---: |
-| ![Landing](docs/media/landing_page.png) | ![Dashboard](docs/media/dashboard.png) |
+| ![Landing](docs/media/landing_page_v2.png) | ![Dashboard](docs/media/dashboard_v2_final.png) |
 
-| Analytics | Onboarding |
+| Analytics | Leads |
 | :---: | :---: |
-| ![Analytics](docs/media/analytics.png) | ![Onboarding](docs/media/onboarding_step_4.png) |
+| ![Analytics](docs/media/analytics_v2_final.png) | ![Leads](docs/media/leads_v2_final.png) |
 
 ## Development
 

@@ -5,8 +5,15 @@ import { Tag } from '../components/ui/Tag';
 
 export function Campaigns() {
   return (
-    <div className="page-content active" style={{ padding: '22px 24px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+    <div className="page active" id="p-camp">
+      <div className="topbar">
+        <div>
+          <div className="tb-title">Campaigns</div>
+          <div className="tb-sub">Automated outreach and lead hunting</div>
+        </div>
+      </div>
+      <div style={{ padding: '22px 24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
         
         <Card>
           <CardHeader>
@@ -92,6 +99,7 @@ export function Campaigns() {
           </div>
         </div>
         
+        </div>
       </div>
     </div>
   );
