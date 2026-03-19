@@ -48,13 +48,13 @@ export function Conversations() {
   if (!activeConv) return null;
 
   return (
-    <div className="convo-layout">
-      <div className="convo-list">
-        <div className="cli-header">All conversations</div>
+    <div className="conv-layout">
+      <div className="conv-list">
+        <div className="cl-head">All conversations</div>
         {Object.values(convData).map(c => (
           <div 
             key={c.id}
-            className={`cli-item ${activeId === c.id ? 'active' : ''}`}
+            className={`cli ${activeId === c.id ? 'active' : ''}`}
             onClick={() => setActiveId(c.id)}
           >
             <div className="cli-top">
@@ -63,16 +63,13 @@ export function Conversations() {
               </div>
               <div className="cli-time">{c.time.replace(' ago', '')}</div>
             </div>
-            <div style={{ margin: '3px 0 6px' }}>
+            <div className="cli-bot" style={{ justifyContent: 'flex-start', margin: '3px 0 6px' }}>
               <span className={`mode-pill mode-${c.mode.toLowerCase()}`}>{c.mode}</span>
             </div>
-            <div 
-              className="cli-preview" 
-              style={{ fontWeight: c.id === 'sarah' ? '500' : 'normal', color: c.id === 'sarah' ? 'var(--text)' : 'var(--text3)' }}
-            >
+            <div className="cli-prev" style={{ fontWeight: c.id === 'sarah' ? '500' : 'normal', color: c.id === 'sarah' ? 'var(--text)' : 'var(--text3)', whiteSpace: 'normal' }}>
               {c.preview}
             </div>
-            <div style={{ marginTop: '4px' }}>
+            <div className="cli-bot" style={{ marginTop: '4px' }}>
               <Tag color={c.tagCls.replace('tag-', '')} style={{ fontSize: '10px' }}>
                 {c.status}
               </Tag>
@@ -81,39 +78,39 @@ export function Conversations() {
         ))}
       </div>
       
-      <div className="convo-main">
-        <div className="convo-topbar">
-          <div className="convo-info">
-            <div className="convo-av">{activeConv.av}</div>
+      <div className="conv-main">
+        <div className="conv-top">
+          <div className="conv-info">
+            <div className="cav" style={{ background: c => c.bgColor || 'var(--text)' }}>{activeConv.av}</div>
             <div>
-              <div className="convo-name-text" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {activeConv.name}
                 <span className={`mode-pill mode-${activeConv.mode.toLowerCase()}`}>{activeConv.mode} mode</span>
               </div>
-              <div className="convo-sub-text">{activeConv.sub}</div>
+              <div style={{ fontSize: '12px', color: 'var(--text3)' }}>{activeConv.sub}</div>
             </div>
           </div>
           <span className={`tag ${activeConv.tagCls}`}>{activeConv.tag}</span>
         </div>
         
-        <div className="msgs-wrap">
+        <div className="msgs">
           {activeMsgs.map((m, i) => (
-            <div key={i} className={`msg-row ${m.f === 'agent' ? 'agent' : 'lead'}`}>
+            <div key={i} className={`mrow ${m.f === 'agent' ? 'ai' : 'human'}`}>
               {m.f === 'agent' ? (
                 <>
-                  <div className="msg-row-av" style={m.isManual ? { background: 'var(--blue)' } : {}}>
+                  <div className="mav" style={m.isManual ? { background: 'var(--blue)' } : {}}>
                     {m.isManual ? 'You' : 'AI'}
                   </div>
                   <div>
-                    <div className="msg-bubble">{m.t}</div>
-                    <div className="msg-meta">{m.ts}</div>
+                    <div className="mb">{m.t}</div>
+                    <div className="mmeta">{m.ts}</div>
                   </div>
                 </>
               ) : (
                 <>
                   <div>
-                    <div className="msg-bubble">{m.t}</div>
-                    <div className="msg-meta">{m.ts}</div>
+                    <div className="mb">{m.t}</div>
+                    <div className="mmeta">{m.ts}</div>
                   </div>
                 </>
               )}
@@ -123,7 +120,7 @@ export function Conversations() {
         </div>
         
         <div className="input-area">
-          <div className="input-box">
+          <div className="ibox">
             <textarea 
               value={input}
               onChange={e => setInput(e.target.value)}
@@ -131,9 +128,9 @@ export function Conversations() {
               placeholder="Send a manual message or override AI..." 
               rows="1"
             />
-            <button className="send-btn" onClick={handleSend}>→</button>
+            <button className="sbtn" onClick={handleSend}>→</button>
           </div>
-          <div className="input-note">
+          <div className="inote">
             AI is handling this conversation · Manual messages override AI for this thread
           </div>
         </div>

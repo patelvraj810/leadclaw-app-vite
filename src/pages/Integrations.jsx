@@ -10,12 +10,12 @@ export function Integrations() {
   };
 
   return (
-    <div className="page-content active">
-      <div className="int-grid">
+    <div className="page active" id="p-int">
+      <div className="ig">
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#000', color: '#fff' }}>✉</div>
+              <div className="int-icn" style={{ background: '#000', color: '#fff' }}>✉</div>
               <div>
                 <CardTitle>Email (Resend)</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>All plans</div>
@@ -34,7 +34,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#25d366', color: '#fff' }}>💬</div>
+              <div className="int-icn" style={{ background: '#25d366', color: '#fff' }}>💬</div>
               <div>
                 <CardTitle>WhatsApp (Meta Cloud API)</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Pro plan</div>
@@ -53,7 +53,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#e1306c', color: '#fff' }}>📸</div>
+              <div className="int-icn" style={{ background: '#e1306c', color: '#fff' }}>📸</div>
               <div>
                 <CardTitle>Instagram DMs</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Premium plan</div>
@@ -72,7 +72,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#1877f2', color: '#fff' }}>👥</div>
+              <div className="int-icn" style={{ background: '#1877f2', color: '#fff' }}>👥</div>
               <div>
                 <CardTitle>Facebook Groups</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Premium plan</div>
@@ -91,7 +91,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#5865f2', color: '#fff' }}>📞</div>
+              <div className="int-icn" style={{ background: '#5865f2', color: '#fff' }}>📞</div>
               <div>
                 <CardTitle>AI Voice Calls</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Premium plan</div>
@@ -110,7 +110,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#ff7a59', color: '#fff' }}>⚡</div>
+              <div className="int-icn" style={{ background: '#ff7a59', color: '#fff' }}>⚡</div>
               <div>
                 <CardTitle>Lead Webhook</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>All plans</div>
@@ -132,7 +132,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#111', color: '#fff' }}>📅</div>
+              <div className="int-icn" style={{ background: '#111', color: '#fff' }}>📅</div>
               <div>
                 <CardTitle>Cal.com</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Pro plan</div>
@@ -151,7 +151,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#635bff', color: '#fff' }}>💳</div>
+              <div className="int-icn" style={{ background: '#635bff', color: '#fff' }}>💳</div>
               <div>
                 <CardTitle>Stripe Payments</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Pro plan</div>
@@ -171,7 +171,7 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#404040', color: '#fff' }}>🔔</div>
+              <div className="int-icn" style={{ background: '#404040', color: '#fff' }}>🔔</div>
               <div>
                 <CardTitle>Notifications</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>All plans</div>

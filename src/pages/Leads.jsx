@@ -9,16 +9,15 @@ export function Leads() {
   const filtered = leadsList.filter(l => filter === 'All' || l.status === filter);
 
   return (
-    <div className="page-content active">
+    <div className="page active" id="p-leads">
       <div className="leads-toolbar">
-        <div className="search-wrap">
-          <span className="search-icon">⌕</span>
+        <div className="srch">
           <input type="text" placeholder="Search leads..." />
         </div>
         {['All', 'Qualified', 'In Progress', 'No Response'].map(f => (
           <button 
             key={f} 
-            className={`filter-btn ${filter === f ? 'active' : ''}`}
+            className={`fbtn ${filter === f ? 'on' : ''}`}
             onClick={() => setFilter(f)}
           >
             {f}
@@ -26,8 +25,8 @@ export function Leads() {
         ))}
       </div>
       
-      <div className="leads-table">
-        <div className="t-header">
+      <div className="tbl">
+        <div className="th">
           <div>Lead</div>
           <div>Service</div>
           <div>Source</div>
@@ -38,27 +37,25 @@ export function Leads() {
         </div>
         
         {filtered.map((l, i) => (
-          <div className="t-row" key={l.id}>
-            <div className="t-name-cell">
-              <div className="lead-av" style={{ 
-                background: l.bgColor || (i === 0 ? '#7c3aed' : i === 1 ? '#2563eb' : i === 2 ? '#16a34a' : '#dc2626'), 
-                width: '28px', height: '28px', fontSize: '10px' 
+          <div className="tr" key={l.id} onClick={() => navigate('/app/conversations?id=' + l.id)}>
+            <div className="tnc">
+              <div className="lav" style={{ 
+                background: l.bgColor || (i === 0 ? 'var(--purple)' : i === 1 ? 'var(--blue)' : i === 2 ? 'var(--green)' : 'var(--red)') 
               }}>
                 {l.av}
               </div>
               <div>
                 <span>{l.name}</span>
-                <div className="t-sub">{l.email}</div>
+                <div className="tsub">{l.email}</div>
               </div>
             </div>
-            <div className="t-cell">{l.service}</div>
-            <div className="t-cell">{l.source}</div>
+            <div className="tc">{l.service}</div>
+            <div className="tc">{l.source}</div>
             <div><span className={`mode-pill mode-${l.mode.toLowerCase()}`}>{l.mode}</span></div>
             <div><span className={`tag ${l.tagCls}`}>{l.status}</span></div>
-            <div className="t-cell mono" style={{ fontSize: '11px' }}>{l.time}</div>
-            <div className="t-actions">
-              <button className="icon-btn" onClick={() => navigate('/app/conversations?id=' + l.id)}>💬</button>
-              <button className="icon-btn">✓</button>
+            <div className="tc" style={{ fontFamily: '"JetBrains Mono", monospace' }}>{l.time}</div>
+            <div className="tc" style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+              <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', opacity: 0.6 }}>💬</button>
             </div>
           </div>
         ))}

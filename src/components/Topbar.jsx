@@ -32,7 +32,7 @@ export function Topbar() {
     actions = (
       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <div className="tag tag-green" style={{ fontSize: '12px', padding: '5px 12px' }}>
-          <span style={{ width: '6px', height: '6px', background: 'var(--green)', borderRadius: '50%', display: 'inline-block' }}></span>
+          <span className="src-dot" style={{ background: 'var(--green)' }}></span>
           {' '}AI Online
         </div>
         <Button variant="ghost" style={{ fontSize: '13px' }} onClick={() => navigate('/')}>
@@ -45,8 +45,8 @@ export function Topbar() {
   return (
     <div className="topbar">
       <div>
-        <div className="topbar-title">{title}</div>
-        <div className="topbar-sub">{sub}</div>
+        <div className="tb-title">{title}</div>
+        <div className="tb-sub">{sub}</div>
       </div>
       {actions && <div>{actions}</div>}
     </div>

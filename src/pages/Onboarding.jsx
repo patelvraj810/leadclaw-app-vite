@@ -25,7 +25,7 @@ export function Onboarding() {
   return (
     <div className="ob-wrap">
       <div className="ob-card">
-        <div className="ob-header">
+        <div className="ob-head">
           <div className="ob-dots">
             {[1, 2, 3, 4, 5].map(i => (
               <div 
@@ -37,35 +37,35 @@ export function Onboarding() {
 
           {step === 1 && (
             <>
-              <div className="ob-step-label">1 of 5</div>
+              <div className="ob-step">1 of 5</div>
               <div className="ob-title">Let's get started</div>
               <div className="ob-sub">Create your account in seconds.</div>
             </>
           )}
           {step === 2 && (
             <>
-              <div className="ob-step-label">2 of 5</div>
+              <div className="ob-step">2 of 5</div>
               <div className="ob-title">Your business</div>
               <div className="ob-sub">This helps your AI agent answer correctly.</div>
             </>
           )}
           {step === 3 && (
             <>
-              <div className="ob-step-label">3 of 5</div>
+              <div className="ob-step">3 of 5</div>
               <div className="ob-title">Name your AI agent</div>
               <div className="ob-sub">Your AI uses this name when talking to leads.</div>
             </>
           )}
           {step === 4 && (
             <>
-              <div className="ob-step-label">4 of 5</div>
+              <div className="ob-step">4 of 5</div>
               <div className="ob-title">Choose your lead sources</div>
               <div className="ob-sub">Where should your AI look for leads?</div>
             </>
           )}
           {step === 5 && (
             <>
-              <div className="ob-step-label">5 of 5</div>
+              <div className="ob-step">5 of 5</div>
               <div className="ob-title">Choose your plan</div>
               <div className="ob-sub">14-day free trial — no credit card required.</div>
             </>
@@ -76,20 +76,20 @@ export function Onboarding() {
           {step === 1 && (
             <>
               <div className="field-row">
-                <div className="field">
+                <div className="fld">
                   <label>First name</label>
                   <input placeholder="Mike" value={firstName} onChange={e => setFirstName(e.target.value)} />
                 </div>
-                <div className="field">
+                <div className="fld">
                   <label>Last name</label>
                   <input placeholder="Johnson" />
                 </div>
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Email</label>
                 <input type="email" placeholder="mike@yourbusiness.com" />
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Password</label>
                 <input type="password" placeholder="Choose a strong password" />
               </div>
@@ -98,19 +98,19 @@ export function Onboarding() {
           
           {step === 2 && (
             <>
-              <div className="field">
+              <div className="fld">
                 <label>Business name</label>
                 <input placeholder="Mike's HVAC" />
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Phone</label>
                 <input type="tel" placeholder="+1 416 555 0100" />
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>City / service area</label>
                 <input placeholder="Brampton, ON" />
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Industry</label>
                 <div className="ind-grid" style={{ marginTop: '8px' }}>
                   {[
@@ -138,21 +138,21 @@ export function Onboarding() {
 
           {step === 3 && (
             <>
-              <div className="field">
+              <div className="fld">
                 <label>Agent name</label>
                 <input placeholder="Alex, Sam, Jordan..." defaultValue="Alex" />
                 <div style={{ fontSize: '12px', color: 'var(--text3)', marginTop: '4px' }}>
                   Tip: a first name feels more personal
                 </div>
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Services you offer (one per line)</label>
                 <textarea 
                   placeholder="Emergency HVAC repair&#10;AC installation&#10;Heating system maintenance"
                   defaultValue="Emergency HVAC repair\nAC installation\nHeating system maintenance"
                 ></textarea>
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Starting price</label>
                 <input placeholder="e.g. Services start from $89" />
               </div>
@@ -161,7 +161,7 @@ export function Onboarding() {
 
           {step === 4 && (
             <>
-              <div className="field">
+              <div className="fld">
                 <label>Connect integrations (You can add more later)</label>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', border: '1px solid var(--border2)', borderRadius: 'var(--r)', cursor: 'pointer' }}>
@@ -200,7 +200,7 @@ export function Onboarding() {
           {step === 5 && (
             <>
               <div 
-                className={`plan-sel ${plan === 'starter' ? 'active' : ''}`} 
+                className={`plan-c ${plan === 'starter' ? 'active' : ''}`} 
                 onClick={() => setPlan('starter')}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -215,7 +215,7 @@ export function Onboarding() {
               </div>
               
               <div 
-                className={`plan-sel ${plan === 'pro' ? 'active' : ''}`} 
+                className={`plan-c ${plan === 'pro' ? 'active' : ''}`} 
                 onClick={() => setPlan('pro')}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -235,7 +235,7 @@ export function Onboarding() {
               </div>
               
               <div 
-                className={`plan-sel ${plan === 'premium' ? 'active' : ''}`} 
+                className={`plan-c ${plan === 'premium' ? 'active' : ''}`} 
                 onClick={() => setPlan('premium')}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -256,7 +256,7 @@ export function Onboarding() {
           )}
         </div>
 
-        <div className="ob-footer">
+        <div className="ob-foot">
           <Button 
             variant="ghost" 
             onClick={prevStep} 

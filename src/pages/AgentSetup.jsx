@@ -11,32 +11,32 @@ export function AgentSetup() {
   const previewName = `${name || 'Alex'} — ${biz || "Mike's HVAC"}`;
 
   return (
-    <div className="page-content active">
-      <div className="setup-grid">
+    <div className="page active" id="p-agent">
+      <div className="setup">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           
-          <div className="setup-panel">
-            <div className="setup-panel-head">Agent identity</div>
-            <div className="setup-panel-body">
-              <div className="field">
+          <div className="spnl">
+            <div className="spnl-h">Agent identity</div>
+            <div className="spnl-b">
+              <div className="fld">
                 <label>Agent name</label>
                 <input type="text" value={name} onChange={e => setName(e.target.value)} />
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Business name</label>
                 <input type="text" value={biz} onChange={e => setBiz(e.target.value)} />
               </div>
-              <div className="field">
+              <div className="fld">
                 <label>Opening message</label>
                 <textarea value={msg} onChange={e => setMsg(e.target.value)} />
               </div>
             </div>
           </div>
 
-          <div className="setup-panel">
-            <div className="setup-panel-head">Tone</div>
-            <div className="setup-panel-body">
-              <div className="tone-grid">
+          <div className="spnl">
+            <div className="spnl-h">Tone</div>
+            <div className="spnl-b">
+              <div className="tg">
                 {[
                   { id: 'friendly', name: 'Friendly', desc: 'Warm, approachable' },
                   { id: 'professional', name: 'Professional', desc: 'Formal, confident' },
@@ -45,20 +45,20 @@ export function AgentSetup() {
                 ].map(t => (
                   <div 
                     key={t.id} 
-                    className={`tone-btn ${tone === t.id ? 'active' : ''}`}
+                    className={`tbtn ${tone === t.id ? 'active' : ''}`}
                     onClick={() => setTone(t.id)}
                   >
-                    <span className="tone-name">{t.name}</span>
-                    <span className="tone-desc">{t.desc}</span>
+                    <span className="tn">{t.name}</span>
+                    <span className="td">{t.desc}</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="setup-panel">
-            <div className="setup-panel-head">Objection Handling</div>
-            <div className="setup-panel-body">
+          <div className="spnl">
+            <div className="spnl-h">Objection Handling</div>
+            <div className="spnl-b">
               <div className="faq-item">
                 <div>
                   <div className="faq-q">"Is $89 just for you to show up?"</div>
@@ -87,22 +87,22 @@ export function AgentSetup() {
         </div>
 
         <div>
-          <div className="preview-card">
-            <div className="preview-head">
-              <div className="preview-av">{(name || 'A').charAt(0).toUpperCase()}</div>
+          <div className="prev-c">
+            <div className="prev-h">
+              <div className="prev-av">{(name || 'A').charAt(0).toUpperCase()}</div>
               <div>
                 <div style={{ fontSize: '14px', fontWeight: '600' }}>{previewName}</div>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Live preview</div>
               </div>
             </div>
-            <div className="preview-msgs">
-              <div className="dmsg dmsg-agent" style={{ animation: 'none', opacity: 1, maxWidth: '80%', fontSize: '13px' }}>
+            <div className="prev-m">
+              <div className="dmsg ai-msg">
                 {previewText}
               </div>
-              <div className="dmsg dmsg-lead" style={{ animation: 'none', opacity: 1, maxWidth: '80%', fontSize: '13px' }}>
+              <div className="dmsg hm-msg">
                 My AC is making a strange grinding noise.
               </div>
-              <div className="dmsg dmsg-agent" style={{ animation: 'none', opacity: 1, maxWidth: '80%', fontSize: '13px' }}>
+              <div className="dmsg ai-msg">
                 That sounds like a bearing or belt issue — both are very fixable! How old is the unit and what brand is it?
               </div>
               <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '13px', color: 'var(--text3)' }}>
