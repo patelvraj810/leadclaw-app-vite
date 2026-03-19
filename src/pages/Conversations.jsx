@@ -63,6 +63,9 @@ export function Conversations() {
               </div>
               <div className="cli-time">{c.time.replace(' ago', '')}</div>
             </div>
+            <div style={{ margin: '3px 0 6px' }}>
+              <span className={`mode-pill mode-${c.mode.toLowerCase()}`}>{c.mode}</span>
+            </div>
             <div 
               className="cli-preview" 
               style={{ fontWeight: c.id === 'sarah' ? '500' : 'normal', color: c.id === 'sarah' ? 'var(--text)' : 'var(--text3)' }}
@@ -83,7 +86,10 @@ export function Conversations() {
           <div className="convo-info">
             <div className="convo-av">{activeConv.av}</div>
             <div>
-              <div className="convo-name-text">{activeConv.name}</div>
+              <div className="convo-name-text" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {activeConv.name}
+                <span className={`mode-pill mode-${activeConv.mode.toLowerCase()}`}>{activeConv.mode} mode</span>
+              </div>
               <div className="convo-sub-text">{activeConv.sub}</div>
             </div>
           </div>

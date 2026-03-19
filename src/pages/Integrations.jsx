@@ -15,9 +15,9 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#ea4335', color: '#fff' }}>✉</div>
+              <div className="int-icon" style={{ background: '#000', color: '#fff' }}>✉</div>
               <div>
-                <CardTitle>Email</CardTitle>
+                <CardTitle>Email (Resend)</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>All plans</div>
               </div>
             </div>
@@ -34,9 +34,9 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#25d366', color: '#fff' }}>📱</div>
+              <div className="int-icon" style={{ background: '#25d366', color: '#fff' }}>💬</div>
               <div>
-                <CardTitle>WhatsApp</CardTitle>
+                <CardTitle>WhatsApp (Meta Cloud API)</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Pro plan</div>
               </div>
             </div>
@@ -47,6 +47,44 @@ export function Integrations() {
               Connect via Meta Cloud API (free) or Twilio. AI responds to WhatsApp messages instantly.
             </div>
             <Button>Connect WhatsApp</Button>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div className="int-icon" style={{ background: '#e1306c', color: '#fff' }}>📸</div>
+              <div>
+                <CardTitle>Instagram DMs</CardTitle>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Premium plan</div>
+              </div>
+            </div>
+            <Tag color="amber">Setup needed</Tag>
+          </CardHeader>
+          <CardBody>
+            <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
+              Auto-respond to story replies and direct messages instantly.
+            </div>
+            <Button>Connect IG</Button>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div className="int-icon" style={{ background: '#1877f2', color: '#fff' }}>👥</div>
+              <div>
+                <CardTitle>Facebook Groups</CardTitle>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Premium plan</div>
+              </div>
+            </div>
+            <Tag color="green">Active</Tag>
+          </CardHeader>
+          <CardBody>
+            <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
+              Hunter mode: Monitor local groups, answer questions, and DM intent leads.
+            </div>
+            <Button variant="ghost">Manage 3 groups</Button>
           </CardBody>
         </Card>
 
@@ -94,9 +132,9 @@ export function Integrations() {
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="int-icon" style={{ background: '#0052cc', color: '#fff' }}>📅</div>
+              <div className="int-icon" style={{ background: '#111', color: '#fff' }}>📅</div>
               <div>
-                <CardTitle>Calendly</CardTitle>
+                <CardTitle>Cal.com</CardTitle>
                 <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Pro plan</div>
               </div>
             </div>
@@ -104,9 +142,29 @@ export function Integrations() {
           </CardHeader>
           <CardBody>
             <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
-              AI sends your booking link when a lead is ready to schedule.
+              AI sends your booking link when a lead is ready to schedule. Includes 2-way sync.
             </div>
             <Button variant="ghost">Connect calendar</Button>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div className="int-icon" style={{ background: '#635bff', color: '#fff' }}>💳</div>
+              <div>
+                <CardTitle>Stripe Payments</CardTitle>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Pro plan</div>
+              </div>
+            </div>
+            <Tag color="green">Active</Tag>
+          </CardHeader>
+          <CardBody>
+            <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
+              AI generates secure invoice links to collect $89 dispatch fees before booking.
+            </div>
+            <Button variant="ghost">View balance</Button>
+
           </CardBody>
         </Card>
 

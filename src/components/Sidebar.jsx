@@ -6,7 +6,9 @@ import {
   MessageSquare, 
   LineChart, 
   Cpu, 
-  Plug 
+  Plug,
+  Globe,
+  Send
 } from 'lucide-react';
 
 export function Sidebar() {
@@ -15,6 +17,7 @@ export function Sidebar() {
       <div className="sb-logo">
         <div className="logo-dot"></div>
         <span className="sb-logo-text">LeadClaw</span>
+        <span className="sb-version" style={{ fontSize: '10px', color: 'var(--text3)', marginLeft: 'auto', fontFamily: '"JetBrains Mono", monospace' }}>v2.0</span>
       </div>
       
       <div className="sb-nav">
@@ -52,7 +55,25 @@ export function Sidebar() {
           Analytics
         </NavLink>
 
-        <div className="sb-section" style={{ marginTop: '12px' }}>Setup</div>
+        <div className="sb-section" style={{ marginTop: '12px' }}>Lead Generation</div>
+        
+        <NavLink 
+          to="/app/sources" 
+          className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}
+        >
+          <Globe size={15} strokeWidth={1.5} />
+          Lead Sources <span className="nav-badge" style={{ background: 'var(--amber)' }}>3</span>
+        </NavLink>
+
+        <NavLink 
+          to="/app/campaigns" 
+          className={({ isActive }) => `nav-btn ${isActive ? 'active' : ''}`}
+        >
+          <Send size={15} strokeWidth={1.5} />
+          Campaigns
+        </NavLink>
+
+        <div className="sb-section" style={{ marginTop: '12px' }}>Configuration</div>
         
         <NavLink 
           to="/app/agent" 

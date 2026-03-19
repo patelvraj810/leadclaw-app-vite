@@ -10,6 +10,8 @@ import { Conversations } from './pages/Conversations';
 import { Analytics } from './pages/Analytics';
 import { AgentSetup } from './pages/AgentSetup';
 import { Integrations } from './pages/Integrations';
+import { Sources } from './pages/Sources';
+import { Campaigns } from './pages/Campaigns';
 
 // Layout
 import { Layout } from './components/Layout';
@@ -27,6 +29,8 @@ export default function App() {
           <Route path="leads" element={<Leads />} />
           <Route path="conversations" element={<Conversations />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="sources" element={<Sources />} />
+          <Route path="campaigns" element={<Campaigns />} />
           <Route path="agent" element={<AgentSetup />} />
           <Route path="integrations" element={<Integrations />} />
         </Route>

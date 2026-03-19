@@ -30,7 +30,8 @@ export function Leads() {
         <div className="t-header">
           <div>Lead</div>
           <div>Service</div>
-          <div>Channel</div>
+          <div>Source</div>
+          <div>Mode</div>
           <div>Status</div>
           <div>Time</div>
           <div></div>
@@ -51,7 +52,8 @@ export function Leads() {
               </div>
             </div>
             <div className="t-cell">{l.service}</div>
-            <div className="t-cell">{l.channel}</div>
+            <div className="t-cell">{l.source}</div>
+            <div><span className={`mode-pill mode-${l.mode.toLowerCase()}`}>{l.mode}</span></div>
             <div><span className={`tag ${l.tagCls}`}>{l.status}</span></div>
             <div className="t-cell mono" style={{ fontSize: '11px' }}>{l.time}</div>
             <div className="t-actions">

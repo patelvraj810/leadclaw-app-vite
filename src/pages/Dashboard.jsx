@@ -13,10 +13,10 @@ export function Dashboard() {
   return (
     <div className="page-content active">
       <div className="kpi-grid">
-        <KpiCard label="Leads today" value="4" change="↑ 2 more than yesterday" />
-        <KpiCard label="Qualified" value="3" change="75% qual rate" />
-        <KpiCard label="Avg response" value="34s" change="Industry avg: 4 hrs" />
-        <KpiCard label="This month" value="47" change="↑ 18% vs last month" />
+        <KpiCard label="Leads today" value="12" change="↑ 4 more than yesterday" />
+        <KpiCard label="Qualified" value="8" change="66% qual rate" />
+        <KpiCard label="Avg response" value="12s" change="Industry avg: 4 hrs" />
+        <KpiCard label="This month" value="134" change="↑ 24% vs last month" />
       </div>
 
       <div className="dash-grid">
@@ -35,11 +35,11 @@ export function Dashboard() {
                 </div>
                 <div className="lead-info">
                   <div className="lead-name">{l.name}</div>
-                  <div className="lead-detail">{l.service}</div>
+                  <div className="lead-detail">{l.source}</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <span className={`tag ${l.tagCls}`} style={{ fontSize: '11px' }}>{l.status}</span>
-                  <div className="lead-time" style={{ marginTop: '3px' }}>{l.time}</div>
+                  <div className={`mode-pill mode-${l.mode.toLowerCase()}`} style={{ marginBottom: '3px', display: 'inline-block' }}>{l.mode}</div>
+                  <div className="lead-time">{l.time}</div>
                 </div>
               </div>
             ))}
@@ -71,9 +71,9 @@ export function Dashboard() {
 
       <Card style={{ marginTop: '18px', borderColor: 'var(--text)' }}>
         <div className="card-header" style={{ background: 'var(--text)' }}>
-          <CardTitle style={{ color: '#fff' }}>🚀 Finish your setup — 3 steps left</CardTitle>
+          <CardTitle style={{ color: '#fff' }}>🚀 Finish your setup — 2 steps left</CardTitle>
           <div style={{ width: '120px', height: '6px', background: 'rgba(255,255,255,.15)', borderRadius: '3px', overflow: 'hidden' }}>
-            <div style={{ width: '40%', height: '100%', background: '#fff', borderRadius: '3px' }}></div>
+            <div style={{ width: '60%', height: '100%', background: '#fff', borderRadius: '3px' }}></div>
           </div>
         </div>
         <CardBody>
@@ -92,13 +92,12 @@ export function Dashboard() {
               </div>
               <Tag color="green">Done</Tag>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '11px 0', borderBottom: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => navigate('/app/agent')}>
-              <div style={{ width: '22px', height: '22px', borderRadius: '50%', border: '2px solid var(--border2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: 'var(--text3)', flexShrink: '0' }}>3</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '11px 0', borderBottom: '1px solid var(--border)' }}>
+              <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'var(--green)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: '#fff', flexShrink: '0', fontWeight: '700' }}>✓</div>
               <div style={{ flex: '1' }}>
-                <div style={{ fontSize: '13px', fontWeight: '500' }}>Set up your AI agent</div>
-                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Give your agent a name and opening message</div>
+                <div style={{ fontSize: '13px', fontWeight: '500', textDecoration: 'line-through', color: 'var(--text3)' }}>Set up your AI agent</div>
               </div>
-              <Button style={{ padding: '5px 12px', fontSize: '12px' }}>Set up →</Button>
+              <Tag color="green">Done</Tag>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '11px 0', borderBottom: '1px solid var(--border)', cursor: 'pointer' }} onClick={() => navigate('/app/integrations')}>
               <div style={{ width: '22px', height: '22px', borderRadius: '50%', border: '2px solid var(--border2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: 'var(--text3)', flexShrink: '0' }}>4</div>
@@ -130,29 +129,29 @@ export function Dashboard() {
             <div style={{ display: 'flex', gap: '13px', alignItems: 'flex-start', padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
               <div className="activity-dot" style={{ background: 'var(--green)' }}></div>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '500' }}>Booking confirmed — Sarah Rodriguez</div>
-                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Emergency AC repair · Today 2–5 PM · 2 minutes ago</div>
+                <div style={{ fontSize: '13px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>Invoice sent to Sarah Rodriguez <span className="mode-pill mode-closer">Closer</span></div>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>$89 diagnostic deposit · Today 2–5 PM · 2 minutes ago</div>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '13px', alignItems: 'flex-start', padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
               <div className="activity-dot" style={{ background: 'var(--amber)' }}></div>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '500' }}>Qualifying James Thompson</div>
-                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Real estate buyer inquiry · In conversation · 18 minutes ago</div>
+                <div style={{ fontSize: '13px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>Hunting in Brampton Homeowners <span className="mode-pill mode-hunter">Hunter</span></div>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Replied to James Thompson's post · 18 minutes ago</div>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '13px', alignItems: 'flex-start', padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
               <div className="activity-dot" style={{ background: 'var(--green)' }}></div>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '500' }}>Recurring booking — Aisha Patel</div>
-                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Weekly clean · Every Tuesday · 1 hour ago</div>
+                <div style={{ fontSize: '13px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>Qualifying Aisha Patel <span className="mode-pill mode-qualifier">Qualifier</span></div>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Asking about bedrooms/bathrooms · 1 hour ago</div>
               </div>
             </div>
             <div style={{ display: 'flex', gap: '13px', alignItems: 'flex-start', padding: '9px 0' }}>
               <div className="activity-dot" style={{ background: 'var(--text3)' }}></div>
               <div>
-                <div style={{ fontSize: '13px', fontWeight: '500' }}>Follow-up scheduled — Marcus Kim</div>
-                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>No response · Auto follow-up in 20h · 3 hours ago</div>
+                <div style={{ fontSize: '13px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '6px' }}>Follow-up scheduled — Marcus Kim <span className="mode-pill mode-nurturer">Nurturer</span></div>
+                <div style={{ fontSize: '12px', color: 'var(--text3)' }}>No response to sink leak · Auto follow-up in 20h · 3 hours ago</div>
               </div>
             </div>
           </div>

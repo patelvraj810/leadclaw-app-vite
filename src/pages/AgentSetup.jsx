@@ -57,30 +57,30 @@ export function AgentSetup() {
           </div>
 
           <div className="setup-panel">
-            <div className="setup-panel-head">Common Q&A</div>
+            <div className="setup-panel-head">Objection Handling</div>
             <div className="setup-panel-body">
               <div className="faq-item">
                 <div>
-                  <div className="faq-q">What are your prices?</div>
-                  <div className="faq-a">Emergency visits from $89. Full quote on-site.</div>
+                  <div className="faq-q">"Is $89 just for you to show up?"</div>
+                  <div className="faq-a">"Yes, that covers the dispatch and diagnosis. If you proceed with the repair, we waive the $89."</div>
                 </div>
                 <button className="icon-btn">✎</button>
               </div>
               <div className="faq-item">
                 <div>
-                  <div className="faq-q">How fast can you come?</div>
-                  <div className="faq-a">Same-day for emergencies, 24–48h regular.</div>
+                  <div className="faq-q">"I found someone cheaper"</div>
+                  <div className="faq-a">"Totally understand. We're fully licensed, insured, and guarantee our work for 12 months. Do they offer that?"</div>
                 </div>
                 <button className="icon-btn">✎</button>
               </div>
               <div className="faq-item">
                 <div>
-                  <div className="faq-q">What areas do you serve?</div>
-                  <div className="faq-a">GTA — Brampton, Mississauga, Oakville.</div>
+                  <div className="faq-q">"Can you just give me a quote over text?"</div>
+                  <div className="faq-a">"Every home is different! We need to see it to give you a fair, accurate price without surprise fees."</div>
                 </div>
                 <button className="icon-btn">✎</button>
               </div>
-              <button className="btn btn-ghost btn-full" style={{ marginTop: '8px' }}>+ Add Q&A</button>
+              <button className="btn btn-ghost btn-full" style={{ marginTop: '8px' }}>+ Add Objection</button>
             </div>
           </div>
 
@@ -105,7 +105,10 @@ export function AgentSetup() {
               <div className="dmsg dmsg-agent" style={{ animation: 'none', opacity: 1, maxWidth: '80%', fontSize: '13px' }}>
                 That sounds like a bearing or belt issue — both are very fixable! How old is the unit and what brand is it?
               </div>
-              <div style={{ padding: '10px 14px', background: 'var(--green-bg)', borderRadius: 'var(--r)', border: '1px solid var(--green-b)', fontSize: '12px', color: 'var(--green)', fontWeight: '500' }}>
+              <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '13px', color: 'var(--text3)' }}>
+                <span className="mode-pill mode-qualifier">Condition gathered</span>
+              </div>
+              <div style={{ padding: '10px 14px', background: 'var(--green-bg)', borderRadius: 'var(--r)', border: '1px solid var(--green-b)', fontSize: '12px', color: 'var(--green)', fontWeight: '500', marginTop: '10px' }}>
                 Lead qualified after 3 messages ✓
               </div>
             </div>
@@ -113,20 +116,20 @@ export function AgentSetup() {
 
           <Card style={{ marginTop: '12px' }}>
             <CardHeader>
-              <CardTitle>Behaviour settings</CardTitle>
+              <CardTitle>Sales intelligence</CardTitle>
             </CardHeader>
             <CardBody style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '400', color: 'var(--text)', cursor: 'pointer' }}>
-                <input type="checkbox" defaultChecked style={{ width: 'auto', accentColor: 'var(--text)' }} /> Ask one question at a time
+                <input type="checkbox" defaultChecked style={{ width: 'auto', accentColor: 'var(--text)' }} /> Detect intent (Price shopper vs Emergency)
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '400', color: 'var(--text)', cursor: 'pointer' }}>
-                <input type="checkbox" defaultChecked style={{ width: 'auto', accentColor: 'var(--text)' }} /> Always push toward next step
+                <input type="checkbox" defaultChecked style={{ width: 'auto', accentColor: 'var(--text)' }} /> Auto-generate invoice link when booked
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '400', color: 'var(--text)', cursor: 'pointer' }}>
-                <input type="checkbox" defaultChecked style={{ width: 'auto', accentColor: 'var(--text)' }} /> Auto follow-up after 24h silence
+                <input type="checkbox" defaultChecked style={{ width: 'auto', accentColor: 'var(--text)' }} /> Multi-touch follow up (Day 1, Day 3, Day 7)
               </label>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '400', color: 'var(--text)', cursor: 'pointer' }}>
-                <input type="checkbox" style={{ width: 'auto', accentColor: 'var(--text)' }} /> Escalate to owner if frustrated
+                <input type="checkbox" style={{ width: 'auto', accentColor: 'var(--text)' }} /> Use emojis in conversation
               </label>
             </CardBody>
           </Card>

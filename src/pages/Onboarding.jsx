@@ -10,7 +10,7 @@ export function Onboarding() {
   const [firstName, setFirstName] = useState('');
 
   const nextStep = () => {
-    if (step < 4) setStep(step + 1);
+    if (step < 5) setStep(step + 1);
     else {
       // Save user to localStorage mock for dashboard
       localStorage.setItem('leadclaw_user', firstName || 'Mike');
@@ -27,7 +27,7 @@ export function Onboarding() {
       <div className="ob-card">
         <div className="ob-header">
           <div className="ob-dots">
-            {[1, 2, 3, 4].map(i => (
+            {[1, 2, 3, 4, 5].map(i => (
               <div 
                 key={i} 
                 className={`ob-dot ${i < step ? 'done' : i === step ? 'active' : ''}`}
@@ -37,28 +37,35 @@ export function Onboarding() {
 
           {step === 1 && (
             <>
-              <div className="ob-step-label">1 of 4</div>
+              <div className="ob-step-label">1 of 5</div>
               <div className="ob-title">Let's get started</div>
               <div className="ob-sub">Create your account in seconds.</div>
             </>
           )}
           {step === 2 && (
             <>
-              <div className="ob-step-label">2 of 4</div>
+              <div className="ob-step-label">2 of 5</div>
               <div className="ob-title">Your business</div>
               <div className="ob-sub">This helps your AI agent answer correctly.</div>
             </>
           )}
           {step === 3 && (
             <>
-              <div className="ob-step-label">3 of 4</div>
+              <div className="ob-step-label">3 of 5</div>
               <div className="ob-title">Name your AI agent</div>
               <div className="ob-sub">Your AI uses this name when talking to leads.</div>
             </>
           )}
           {step === 4 && (
             <>
-              <div className="ob-step-label">4 of 4</div>
+              <div className="ob-step-label">4 of 5</div>
+              <div className="ob-title">Choose your lead sources</div>
+              <div className="ob-sub">Where should your AI look for leads?</div>
+            </>
+          )}
+          {step === 5 && (
+            <>
+              <div className="ob-step-label">5 of 5</div>
               <div className="ob-title">Choose your plan</div>
               <div className="ob-sub">14-day free trial — no credit card required.</div>
             </>
@@ -154,6 +161,44 @@ export function Onboarding() {
 
           {step === 4 && (
             <>
+              <div className="field">
+                <label>Connect integrations (You can add more later)</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '12px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', border: '1px solid var(--border2)', borderRadius: 'var(--r)', cursor: 'pointer' }}>
+                    <input type="checkbox" defaultChecked />
+                    <div>
+                      <div style={{ fontWeight: '500', fontSize: '14px' }}>Website Form</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Webhooks and email forwarding</div>
+                    </div>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', border: '1px solid var(--border2)', borderRadius: 'var(--r)', cursor: 'pointer' }}>
+                    <input type="checkbox" />
+                    <div>
+                      <div style={{ fontWeight: '500', fontSize: '14px' }}>Facebook & IG Comments</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Auto-DM people who comment on your posts</div>
+                    </div>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', border: '1px solid var(--border2)', borderRadius: 'var(--r)', cursor: 'pointer' }}>
+                    <input type="checkbox" />
+                    <div>
+                      <div style={{ fontWeight: '500', fontSize: '14px' }}>Google / Facebook Ads</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text3)' }}>Instant response to Lead Gen forms</div>
+                    </div>
+                  </label>
+                   <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', border: '1px solid var(--border2)', borderRadius: 'var(--r)', cursor: 'pointer' }}>
+                    <input type="checkbox" />
+                    <div>
+                      <div style={{ fontWeight: '500', fontSize: '14px' }}>Meta Cloud API (WhatsApp)</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text3)' }}>AI responds directly to WhatsApp inquiries</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </>
+          )}
+
+          {step === 5 && (
+            <>
               <div 
                 className={`plan-sel ${plan === 'starter' ? 'active' : ''}`} 
                 onClick={() => setPlan('starter')}
@@ -220,10 +265,10 @@ export function Onboarding() {
             ← Back
           </Button>
           <span style={{ fontSize: '12px', color: 'var(--text3)', fontFamily: '"JetBrains Mono", monospace' }}>
-            {step} of 4
+            {step} of 5
           </span>
           <Button onClick={nextStep}>
-            {step === 4 ? 'Start free trial →' : 'Continue →'}
+            {step === 5 ? 'Start free trial →' : 'Continue →'}
           </Button>
         </div>
       </div>
