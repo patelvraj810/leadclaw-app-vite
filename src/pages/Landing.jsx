@@ -25,10 +25,10 @@ export function Landing() {
 
       <section className="hero">
         <div className="hero-badge">
-          <div className="hero-badge-dot"></div>
-          Your AI sales team.
+          <span style={{width:'6px',height:'6px',background:'var(--green)',borderRadius:'50%',display:'inline-block',marginRight:'8px'}}></span>
+          85% of homeowners call the next company after voicemail
         </div>
-        <h1>Always on.<br /><em>Always closing.</em></h1>
+        <h1>Your AI sales team.<br /><em>Always on. Always closing.</em></h1>
         <p className="hero-sub">
           LeadClaw finds leads, qualifies them, handles objections, and books the job — across every channel — while you're busy doing the actual work.
         </p>
@@ -38,7 +38,7 @@ export function Landing() {
             See the dashboard →
           </Button>
         </div>
-        <p className="hero-note"><strong>No credit card required.</strong> Set up in 10 minutes.</p>
+        <p className="hero-note"><strong>No credit card.</strong> Set up in 10 minutes. Cancel anytime.</p>
       </section>
 
       <div className="stats">
