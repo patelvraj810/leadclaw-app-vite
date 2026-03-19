@@ -26,11 +26,11 @@ export function Landing() {
       <section className="hero">
         <div className="hero-badge">
           <div className="hero-badge-dot"></div>
-          85% of homeowners call the next company after voicemail
+          Your AI sales team.
         </div>
-        <h1>Stop losing jobs<br /><em>to voicemail</em></h1>
+        <h1>Always on.<br /><em>Always closing.</em></h1>
         <p className="hero-sub">
-          Every missed call while you're on-site is a job going to your competitor. LeadClaw's AI answers instantly, qualifies the lead, and books the appointment — 24/7, while you work.
+          LeadClaw finds leads, qualifies them, handles objections, and books the job — across every channel — while you're busy doing the actual work.
         </p>
         <div className="hero-ctas">
           <Button size="lg" onClick={() => navigate('/onboarding')}>Start free — 14 days</Button>
