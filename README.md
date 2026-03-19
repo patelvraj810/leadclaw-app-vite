@@ -1,16 +1,44 @@
-# React + Vite
+# LeadClaw — AI Sales Agent for Service Businesses
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+LeadClaw is an AI-powered sales platform designed to help service businesses (HVAC, Plumbing, Real Estate, etc.) capture, qualify, and book leads 24/7 across multiple channels.
 
-Currently, two official plugins are available:
+## LeadClaw V2 — Design Parity Reached 🚀
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This repository contains the LeadClaw V2 React application, fully synchronized with the latest design specifications. 
 
-## React Compiler
+### Key Features
+- **Multi-Channel Capture**: Website, Facebook Groups, Instagram DMs, Google Ads.
+- **AI Sales Intelligence**: 4 specialized agent modes (Hunter, Qualifier, Closer, Nurturer).
+- **Automated Booking**: Integration with Cal.com for seamless appointment setting.
+- **Analytics Dashboard**: Real-time tracking of lead sources, response times, and conversion funnels.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Visual Verification
 
-## Expanding the ESLint configuration
+### Verification Recording
+![V2 Verification](docs/media/verification_recording.webp)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### UI Highlights
+
+| Landing Page | Dashboard |
+| :---: | :---: |
+| ![Landing](docs/media/landing_page.png) | ![Dashboard](docs/media/dashboard.png) |
+
+| Analytics | Onboarding |
+| :---: | :---: |
+| ![Analytics](docs/media/analytics.png) | ![Onboarding](docs/media/onboarding_step_4.png) |
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## Deployment
+Deployed via Railway.

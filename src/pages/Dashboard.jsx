@@ -3,154 +3,165 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardBody } from '../components/ui/Card';
 import { KpiCard } from '../components/ui/KpiCard';
 import { Tag } from '../components/ui/Tag';
-import { Button } from '../components/ui/Button';
 import { convData } from '../data/conversations';
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const leads = Object.values(convData).slice(0, 4);
+  // Match V2 lead order
+  const leads = [
+    convData.sarah,
+    convData.james,
+    convData.aisha,
+    convData.marcus
+  ].filter(Boolean);
 
   return (
     <div className="page active" id="p-dash">
-      <div className="kpi-grid">
-        <KpiCard label="Leads today" value="12" change="↑ 4 more than yesterday" />
-        <KpiCard label="Qualified" value="8" change="66% qual rate" />
-        <KpiCard label="Avg response" value="12s" change="Industry avg: 4 hrs" />
-        <KpiCard label="This month" value="134" change="↑ 24% vs last month" />
-      </div>
-
-      <div className="dash-grid">
-        <Card>
-          <CardHeader>
-            <CardTitle>New leads</CardTitle>
-            <button className="fbtn" onClick={() => navigate('/app/leads')}>View all</button>
-          </CardHeader>
-          <CardBody>
-            {leads.map((l, i) => (
-              <div className="lead-row" key={l.id}>
-                <div className="lav" style={{ background: i === 0 ? 'var(--purple)' : i === 1 ? 'var(--blue)' : i === 2 ? 'var(--green)' : 'var(--red)' }}>
-                  {l.av}
-                </div>
-                <div className="li">
-                  <div className="ln">{l.name}</div>
-                  <div className="ld">{l.source}</div>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div className={`mode-pill mode-${l.mode.toLowerCase()}`} style={{ marginBottom: '3px' }}>{l.mode}</div>
-                  <div className="ld">{l.time}</div>
-                </div>
-              </div>
-            ))}
-          </CardBody>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent conversations</CardTitle>
-            <button className="fbtn" onClick={() => navigate('/app/conversations')}>View all</button>
-          </CardHeader>
-          <CardBody>
-            {leads.slice(0, 3).map(l => (
-              <div className="lead-row" style={{ alignItems: 'flex-start' }} key={l.id}>
-                <div className="li">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
-                    <div className="ln" style={{ fontWeight: l.id === 'sarah' ? '600' : 'normal' }}>{l.name}</div>
-                    <div className="ld">{l.time.replace(' ago', '')}</div>
-                  </div>
-                  <div className="ld" style={{ fontWeight: l.id === 'sarah' ? '500' : 'normal', color: l.id === 'sarah' ? 'var(--text)' : 'inherit' }}>
-                    {l.preview}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </CardBody>
-        </Card>
-      </div>
-
-      <Card style={{ marginTop: '18px', borderColor: 'var(--text)' }}>
-        <div className="ch" style={{ background: 'var(--text)' }}>
-          <CardTitle style={{ color: '#fff' }}>🚀 Finish your setup — 2 steps left</CardTitle>
-          <div style={{ width: '120px', height: '6px', background: 'rgba(255,255,255,.15)', borderRadius: '3px', overflow: 'hidden' }}>
-            <div style={{ width: '60%', height: '100%', background: '#fff', borderRadius: '3px' }}></div>
-          </div>
+      <div className="topbar">
+        <div>
+          <div className="tb-title">Dashboard</div>
+          <div className="tb-sub" id="dash-greet">Good morning — AI agent is active across 3 channels</div>
         </div>
-        <CardBody>
-          <div className="checklist-row">
-            <div className="cl-check cl-done">✓</div>
-            <div className="cl-info">
-              <div className="cl-title done">Create your account</div>
-            </div>
-            <Tag color="green">Done</Tag>
-          </div>
-          <div className="checklist-row">
-            <div className="cl-check cl-done">✓</div>
-            <div className="cl-info">
-              <div className="cl-title done">Tell us about your business</div>
-            </div>
-            <Tag color="green">Done</Tag>
-          </div>
-          <div className="checklist-row">
-            <div className="cl-check cl-done">✓</div>
-            <div className="cl-info">
-              <div className="cl-title done">Set up your AI agent</div>
-            </div>
-            <Tag color="green">Done</Tag>
-          </div>
-          <div className="checklist-row" style={{ cursor: 'pointer' }} onClick={() => navigate('/app/integrations')}>
-            <div className="cl-check cl-todo">4</div>
-            <div className="cl-info">
-              <div className="cl-title">Connect your lead source</div>
-              <div className="cl-sub">Add your webhook URL to your contact form</div>
-            </div>
-            <button className="fbtn">Connect →</button>
-          </div>
-          <div className="checklist-row" style={{ cursor: 'pointer' }} onClick={() => navigate('/app/integrations')}>
-            <div className="cl-check cl-todo">5</div>
-            <div className="cl-info">
-              <div className="cl-title">Connect WhatsApp (optional)</div>
-              <div className="cl-sub">Reach leads where they already are</div>
-            </div>
-            <button className="fbtn">Connect →</button>
-          </div>
-        </CardBody>
-      </Card>
+        <div style={{ display: 'flex', gap: '9px', alignItems: 'center' }}>
+          <span className="tag tag-green" style={{ fontSize: '12px', padding: '5px 11px' }}>
+            <span style={{ width: '5px', height: '5px', background: 'var(--green)', borderRadius: '50%', display: 'inline-block', marginRight: '3px' }}></span>
+            Agent Online
+          </span>
+          <button className="btn btn-ghost btn-sm" onClick={() => navigate('/')}>← Site</button>
+        </div>
+      </div>
 
-      <Card style={{ marginTop: '18px' }}>
-        <CardHeader>
-          <CardTitle>AI agent activity</CardTitle>
-          <Tag color="green">Active now</Tag>
-        </CardHeader>
-        <CardBody>
-          <div className="act-row">
-            <div className="act-dot" style={{ background: 'var(--green)' }}></div>
-            <div className="cl-info">
-              <div className="cl-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>Invoice sent to Sarah Rodriguez <span className="mode-pill mode-closer">Closer</span></div>
-              <div className="cl-sub">$89 diagnostic deposit · Today 2–5 PM · 2 minutes ago</div>
+      <div style={{ padding: '22px 24px' }}>
+        <div className="kpi-grid">
+          <KpiCard label="Leads today" value="7" change="↑ 3 more than yesterday" />
+          <KpiCard label="Qualified" value="5" change="71% qual rate" />
+          <KpiCard label="Avg response" value="34s" change="Industry avg: 4 hrs" />
+          <KpiCard label="This month" value="64" change="↑ 34% vs last month" />
+        </div>
+
+        {/* Setup Checklist */}
+        <Card style={{ marginBottom: '18px', borderColor: 'var(--text)' }}>
+          <div className="ch" style={{ background: 'var(--text)' }}>
+            <div className="ct" style={{ color: '#fff' }}>🚀 Finish your setup — 2 steps left</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '100px', height: '5px', background: 'rgba(255,255,255,.2)', borderRadius: '3px', overflow: 'hidden' }}>
+                <div style={{ width: '60%', height: '100%', background: '#fff', borderRadius: '3px' }}></div>
+              </div>
+              <span style={{ fontSize: '11px', color: 'rgba(255,255,255,.6)' }}>3/5</span>
             </div>
           </div>
-          <div className="act-row">
-            <div className="act-dot" style={{ background: 'var(--amber)' }}></div>
-            <div className="cl-info">
-              <div className="cl-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>Hunting in Brampton Homeowners <span className="mode-pill mode-hunter">Hunter</span></div>
-              <div className="cl-sub">Replied to James Thompson's post · 18 minutes ago</div>
+          <CardBody>
+            <div className="checklist-row">
+              <div className="cl-check cl-done">✓</div>
+              <div className="cl-info">
+                <div className="cl-title done">Create account</div>
+              </div>
+              <Tag color="green" style={{ fontSize: '11px' }}>Done</Tag>
             </div>
-          </div>
-          <div className="act-row">
-            <div className="act-dot" style={{ background: 'var(--green)' }}></div>
-            <div className="cl-info">
-              <div className="cl-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>Qualifying Aisha Patel <span className="mode-pill mode-qualifier">Qualifier</span></div>
-              <div className="cl-sub">Asking about bedrooms/bathrooms · 1 hour ago</div>
+            <div className="checklist-row">
+              <div className="cl-check cl-done">✓</div>
+              <div className="cl-info">
+                <div className="cl-title done">Business profile</div>
+              </div>
+              <Tag color="green" style={{ fontSize: '11px' }}>Done</Tag>
             </div>
-          </div>
-          <div className="act-row">
-            <div className="act-dot" style={{ background: 'var(--text3)' }}></div>
-            <div className="cl-info">
-              <div className="cl-title" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>Follow-up scheduled — Marcus Kim <span className="mode-pill mode-nurturer">Nurturer</span></div>
-              <div className="cl-sub">No response to sink leak · Auto follow-up in 20h · 3 hours ago</div>
+            <div className="checklist-row">
+              <div className="cl-check cl-done">✓</div>
+              <div className="cl-info">
+                <div className="cl-title done">Email channel connected</div>
+              </div>
+              <Tag color="green" style={{ fontSize: '11px' }}>Done</Tag>
             </div>
-          </div>
-        </CardBody>
-      </Card>
+            <div className="checklist-row" style={{ cursor: 'pointer' }} onClick={() => navigate('/app/agent')}>
+              <div className="cl-check cl-todo">4</div>
+              <div className="cl-info">
+                <div className="cl-title">Set up your AI agent personality</div>
+                <div className="cl-sub">Give it a name, tone and opening message</div>
+              </div>
+              <button className="btn btn-dark btn-sm">Set up →</button>
+            </div>
+            <div className="checklist-row" style={{ cursor: 'pointer' }} onClick={() => navigate('/app/sources')}>
+              <div className="cl-check cl-todo">5</div>
+              <div className="cl-info">
+                <div className="cl-title">Connect your first lead source</div>
+                <div className="cl-sub">Website form, Google Ads, Facebook — your choice</div>
+              </div>
+              <button className="btn btn-ghost btn-sm">Connect →</button>
+            </div>
+          </CardBody>
+        </Card>
+
+        <div className="dash-grid">
+          <Card>
+            <CardHeader>
+              <CardTitle>New leads</CardTitle>
+              <button className="btn btn-ghost btn-sm" onClick={() => navigate('/app/leads')}>View all</button>
+            </CardHeader>
+            <CardBody>
+              {leads.map((l, i) => (
+                <div className="lead-row" key={l.id}>
+                  <div className="lav" style={{ background: i === 0 ? 'var(--purple)' : i === 1 ? 'var(--blue)' : i === 2 ? 'var(--green)' : 'var(--red)' }}>
+                    {l.av}
+                  </div>
+                  <div className="li">
+                    <div className="ln">{l.name}</div>
+                    <div className="ld">{l.sub.split(' · ')[0]} · via {l.source}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <Tag color={l.tagCls.replace('tag-', '')} style={{ fontSize: '10px' }}>{l.tag}</Tag>
+                    <div style={{ fontSize: '10px', color: 'var(--text3)', marginTop: '2px', fontFamily: "'JetBrains Mono', monospace" }}>{l.time.includes('ago') ? l.time : `${l.time} ago`}</div>
+                  </div>
+                </div>
+              ))}
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Agent activity</CardTitle>
+              <Tag color="green" style={{ fontSize: '11px' }}>Live</Tag>
+            </CardHeader>
+            <CardBody>
+              <div className="act-row">
+                <div className="act-dot" style={{ background: 'var(--green)' }}></div>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: '500' }}>Booking confirmed — Sarah Rodriguez</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                    HVAC emergency · Today 2–5 PM · <span className="mode-pill mode-closer" style={{ fontSize: '9px', padding: '1px 6px' }}>Closer</span>
+                  </div>
+                </div>
+              </div>
+              <div className="act-row">
+                <div className="act-dot" style={{ background: 'var(--amber)' }}></div>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: '500' }}>Qualifying James Thompson</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                    Real estate buyer · In convo · <span className="mode-pill mode-qualifier" style={{ fontSize: '9px', padding: '1px 6px' }}>Qualifier</span>
+                  </div>
+                </div>
+              </div>
+              <div className="act-row">
+                <div className="act-dot" style={{ background: 'var(--purple)' }}></div>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: '500' }}>Hunting — Brampton Homeowners Group</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                    Found 3 AC posts · Commented on 2 · <span className="mode-pill mode-hunter" style={{ fontSize: '9px', padding: '1px 6px' }}>Hunter</span>
+                  </div>
+                </div>
+              </div>
+              <div className="act-row">
+                <div className="act-dot" style={{ background: 'var(--text3)' }}></div>
+                <div>
+                  <div style={{ fontSize: '12px', fontWeight: '500' }}>Follow-up queued — Marcus Kim</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text3)' }}>
+                    Day 3 re-engagement · 20h · <span className="mode-pill mode-nurturer" style={{ fontSize: '9px', padding: '1px 6px' }}>Nurturer</span>
+                  </div>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

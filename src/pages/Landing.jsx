@@ -8,16 +8,16 @@ export function Landing() {
   return (
     <>
       <nav className="nav">
-        <div className="nav-logo">
+        <div className="logo">
           <div className="logo-dot"></div>
           LeadClaw
         </div>
         <div className="nav-links hidden-mobile">
-          <a href="#how-it-works">How it works</a>
+          <a href="#how">How it works</a>
           <a href="#pricing">Pricing</a>
           <a href="#industries">Industries</a>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
           <Button variant="ghost" onClick={() => navigate('/app/dashboard')}>Sign in</Button>
           <Button onClick={() => navigate('/onboarding')}>Start free trial</Button>
         </div>
@@ -65,7 +65,7 @@ export function Landing() {
       </div>
 
       {/* HOW IT WORKS */}
-      <div className="lsection" style={{paddingTop:0}}>
+      <div className="lsection" style={{paddingTop:0}} id="how">
         <div className="badge">How it works</div>
         <h2>Set up once.<br />Convert forever.</h2>
         <div className="steps3">
@@ -116,7 +116,7 @@ export function Landing() {
       </div>
 
       {/* INDUSTRIES */}
-      <div className="lsection" style={{paddingTop:0}}>
+      <div className="lsection" style={{paddingTop:0}} id="industries">
         <div className="badge">Industries</div>
         <h2>Built for service<br />businesses like yours</h2>
         <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px'}}>
@@ -130,7 +130,7 @@ export function Landing() {
       </div>
 
       {/* PRICING */}
-      <div className="lsection" style={{paddingTop:0}}>
+      <div className="lsection" style={{paddingTop:0}} id="pricing">
         <div className="badge">Pricing</div>
         <h2>Simple pricing.<br />Profitable from day 1.</h2>
         <div className="pricing-grid">
@@ -141,7 +141,7 @@ export function Landing() {
               <li>AI sales agent via email</li><li>Website form webhook</li><li>100 leads/month</li>
               <li>Lead dashboard</li><li>Conversation history</li><li>LeadClaw directory listing</li>
             </ul>
-            <Button variant="ghost" className="btn-full" onClick={() => navigate('/onboarding')}>Start free trial</Button>
+            <Button variant="ghost" fullWidth onClick={() => navigate('/onboarding')}>Start free trial</Button>
           </div>
           <div className="plan featured">
             <div className="plan-pop">Most popular</div>
@@ -153,7 +153,7 @@ export function Landing() {
               <li>Google Maps monitoring</li><li>500 leads/month</li>
               <li>Lead scoring + insights</li><li>Cal.com booking integration</li>
             </ul>
-            <Button variant="ghost" className="btn-full" onClick={() => navigate('/onboarding')}>Start free trial</Button>
+            <Button variant="ghost" fullWidth onClick={() => navigate('/onboarding')}>Start free trial</Button>
           </div>
           <div className="plan">
             <div className="plan-name">Premium</div><div className="plan-sub">Full AI Sales OS</div>
@@ -164,7 +164,7 @@ export function Landing() {
               <li>Unlimited leads</li><li>Done-for-you outreach</li>
               <li>Managed ad campaigns</li><li>White-label option</li>
             </ul>
-            <Button variant="ghost" className="btn-full" onClick={() => navigate('/onboarding')}>Start free trial</Button>
+            <Button variant="ghost" fullWidth onClick={() => navigate('/onboarding')}>Start free trial</Button>
           </div>
         </div>
       </div>
@@ -200,8 +200,9 @@ export function Landing() {
       </div>
 
       <footer>
-        <div className="footer-logo"><span style={{ color: 'var(--green)' }}>●</span> LeadClaw</div>
-        <div className="footer-note">© 2026 LeadClaw Inc. All rights reserved.</div>
+        <div style={{fontFamily:'"Clash Display", sans-serif',fontSize:'17px',fontWeight:700}}>LeadClaw</div>
+        <div style={{fontSize:'13px',color:'var(--text3)'}}>© 2026 LeadClaw · AI Sales OS for Service Businesses</div>
+        <div style={{display:'flex',gap:'14px',marginTop:'12px'}}><a href="#" style={{fontSize:'13px',color:'var(--text3)',textDecoration:'none'}}>Privacy</a><a href="#" style={{fontSize:'13px',color:'var(--text3)',textDecoration:'none'}}>Terms</a></div>
       </footer>
     </>
   );
