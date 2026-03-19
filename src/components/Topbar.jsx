@@ -1,8 +1,8 @@
-import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
+import { Menu } from 'lucide-react';
 
-export function Topbar() {
+export function Topbar({ toggleMenu }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,9 +28,15 @@ export function Topbar() {
   } else if (location.pathname.includes('/app/integrations')) {
     title = 'Integrations';
     sub = 'Connect your channels and tools';
+  } else if (location.pathname.includes('/app/sources')) {
+    title = 'Lead Sources';
+    sub = 'Manage your capture channels';
+  } else if (location.pathname.includes('/app/campaigns')) {
+    title = 'Campaigns';
+    sub = 'Active outreach campaigns';
   } else if (location.pathname.includes('/app/dashboard')) {
     actions = (
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+      <div className="hidden-mobile" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
         <div className="tag tag-green" style={{ fontSize: '12px', padding: '5px 12px' }}>
           <span className="src-dot" style={{ background: 'var(--green)' }}></span>
           {' '}AI Online
@@ -44,9 +50,14 @@ export function Topbar() {
 
   return (
     <div className="topbar">
-      <div>
-        <div className="tb-title">{title}</div>
-        <div className="tb-sub">{sub}</div>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <button className="menu-toggle" onClick={toggleMenu}>
+          <Menu size={20} />
+        </button>
+        <div>
+          <div className="tb-title">{title}</div>
+          <div className="tb-sub">{sub}</div>
+        </div>
       </div>
       {actions && <div>{actions}</div>}
     </div>

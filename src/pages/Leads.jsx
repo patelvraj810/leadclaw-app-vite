@@ -9,16 +9,7 @@ export function Leads() {
   const filtered = leadsList.filter(l => filter === 'All' || l.status === filter);
 
   return (
-    <div className="page active" id="p-leads">
-      <div className="topbar">
-        <div>
-          <div className="tb-title">Leads</div>
-          <div className="tb-sub">All leads captured by your AI agent</div>
-        </div>
-        <div style={{ display: 'flex', gap: '9px', alignItems: 'center' }}>
-          <button className="btn btn-dark btn-sm">+ Add lead</button>
-        </div>
-      </div>
+    <div className="page active" id="p-leads" style={{ padding: '24px' }}>
       <div className="leads-toolbar">
         <div className="srch">
           <input type="text" placeholder="Search leads..." />
@@ -36,13 +27,13 @@ export function Leads() {
       
       <div className="tbl">
         <div className="th">
-          <div>Lead</div>
-          <div>Service</div>
-          <div>Source</div>
-          <div>Mode</div>
-          <div>Status</div>
-          <div>Time</div>
-          <div></div>
+          <div className="tc">Lead</div>
+          <div className="tc">Service</div>
+          <div className="tc">Source</div>
+          <div className="tc">Mode</div>
+          <div className="tc">Status</div>
+          <div className="tc">Time</div>
+          <div className="tc"></div>
         </div>
         
         {filtered.map((l, i) => (
@@ -60,8 +51,8 @@ export function Leads() {
             </div>
             <div className="tc">{l.service}</div>
             <div className="tc">{l.source}</div>
-            <div><span className={`mode-pill mode-${l.mode.toLowerCase()}`}>{l.mode}</span></div>
-            <div><span className={`tag ${l.tagCls}`}>{l.status}</span></div>
+            <div className="tc"><span className={`mode-pill mode-${l.mode.toLowerCase()}`}>{l.mode}</span></div>
+            <div className="tc"><span className={`tag ${l.tagCls}`}>{l.status}</span></div>
             <div className="tc" style={{ fontFamily: '"JetBrains Mono", monospace' }}>{l.time}</div>
             <div className="tc" style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
               <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px', opacity: 0.6 }}>💬</button>

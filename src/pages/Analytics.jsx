@@ -4,13 +4,7 @@ import { KpiCard } from '../components/ui/KpiCard';
 
 export function Analytics() {
   return (
-    <div className="page active" id="p-analytics">
-      <div className="topbar">
-        <div>
-          <div className="tb-title">Analytics</div>
-          <div className="tb-sub">Last 30 days</div>
-        </div>
-      </div>
+    <div className="page active" id="p-analytics" style={{ padding: '0' }}>
       
       <div style={{ padding: '22px 24px' }}>
         <div className="kpi-grid">

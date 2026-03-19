@@ -16,21 +16,7 @@ export function Dashboard() {
   ].filter(Boolean);
 
   return (
-    <div className="page active" id="p-dash">
-      <div className="topbar">
-        <div>
-          <div className="tb-title">Dashboard</div>
-          <div className="tb-sub" id="dash-greet">Good morning — AI agent is active across 3 channels</div>
-        </div>
-        <div style={{ display: 'flex', gap: '9px', alignItems: 'center' }}>
-          <span className="tag tag-green" style={{ fontSize: '12px', padding: '5px 11px' }}>
-            <span style={{ width: '5px', height: '5px', background: 'var(--green)', borderRadius: '50%', display: 'inline-block', marginRight: '3px' }}></span>
-            Agent Online
-          </span>
-          <button className="btn btn-ghost btn-sm" onClick={() => navigate('/')}>← Site</button>
-        </div>
-      </div>
-
+    <div className="page active" id="p-dash" style={{ padding: '0' }}>
       <div style={{ padding: '22px 24px' }}>
         <div className="kpi-grid">
           <KpiCard label="Leads today" value="7" change="↑ 3 more than yesterday" />

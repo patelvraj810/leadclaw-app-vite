@@ -8,16 +8,23 @@ import {
   Cpu, 
   Plug,
   Globe,
-  Send
+  Send,
+  X
 } from 'lucide-react';
 
-export function Sidebar() {
+export function Sidebar({ isOpen, onClose }) {
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sb-logo">
         <div className="logo-dot"></div>
         <span className="sb-logo-text">LeadClaw</span>
         <span className="sb-version">v2.0</span>
+        <button 
+          className="menu-toggle" 
+          onClick={onClose}
+        >
+          <X size={18} />
+        </button>
       </div>
       
       <div className="sb-nav">
@@ -25,6 +32,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/dashboard" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <LayoutDashboard size={15} strokeWidth={1.5} />
@@ -33,6 +41,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/leads" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Users size={15} strokeWidth={1.5} />
@@ -41,6 +50,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/conversations" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <MessageSquare size={15} strokeWidth={1.5} />
@@ -49,6 +59,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/analytics" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <LineChart size={15} strokeWidth={1.5} />
@@ -59,6 +70,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/sources" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Globe size={15} strokeWidth={1.5} />
@@ -67,6 +79,7 @@ export function Sidebar() {
 
         <NavLink 
           to="/app/campaigns" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Send size={15} strokeWidth={1.5} />
@@ -77,6 +90,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/agent" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Cpu size={15} strokeWidth={1.5} />
@@ -85,6 +99,7 @@ export function Sidebar() {
         
         <NavLink 
           to="/app/integrations" 
+          onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Plug size={15} strokeWidth={1.5} />
@@ -93,6 +108,15 @@ export function Sidebar() {
       </div>
 
       <div className="sb-bottom">
+        <NavLink 
+          to="/" 
+          onClick={onClose}
+          className="nb mobile-only"
+          style={{ marginBottom: '12px', border: '1px solid var(--border)', background: 'var(--surface2)' }}
+        >
+          <Globe size={15} strokeWidth={1.5} />
+          Back to Website
+        </NavLink>
         <div className="user-pill">
           <div className="u-av">M</div>
           <div>

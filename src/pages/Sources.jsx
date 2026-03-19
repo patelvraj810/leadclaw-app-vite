@@ -9,13 +9,7 @@ export function Sources() {
   };
 
   return (
-    <div className="page active" id="p-sources">
-      <div className="topbar">
-        <div>
-          <div className="tb-title">Lead Sources</div>
-          <div className="tb-sub">Choose where your leads come from</div>
-        </div>
-      </div>
+    <div className="page active" id="p-sources" style={{ padding: '24px' }}>
       <div className="src-cat">
         <div className="src-cat-title">
           🟢 Inbound — Passive capture <Tag color="green">Responds to leads who find you</Tag>

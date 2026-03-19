@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
+import { Menu, X } from 'lucide-react';
 
 export function Landing() {
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
@@ -12,14 +14,23 @@ export function Landing() {
           <div className="logo-dot"></div>
           LeadClaw
         </div>
-        <div className="nav-links hidden-mobile">
-          <a href="#how">How it works</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#industries">Industries</a>
+        <div className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
+          <a href="#how" onClick={() => setIsMenuOpen(false)}>How it works</a>
+          <a href="#pricing" onClick={() => setIsMenuOpen(false)}>Pricing</a>
+          <a href="#industries" onClick={() => setIsMenuOpen(false)}>Industries</a>
+          <div className="mobile-only" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', width: '100%' }}>
+            <Button variant="ghost" fullWidth onClick={() => navigate('/app/dashboard')}>Sign in</Button>
+            <Button fullWidth onClick={() => navigate('/onboarding')}>Start free trial</Button>
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <Button variant="ghost" onClick={() => navigate('/app/dashboard')}>Sign in</Button>
-          <Button onClick={() => navigate('/onboarding')}>Start free trial</Button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <div className="hidden-mobile" style={{ display: 'flex', gap: '8px' }}>
+            <Button variant="ghost" onClick={() => navigate('/app/dashboard')}>Sign in</Button>
+            <Button onClick={() => navigate('/onboarding')}>Start free trial</Button>
+          </div>
+          <button className="menu-toggle mobile-only" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </nav>
 
@@ -34,7 +45,7 @@ export function Landing() {
         </p>
         <div className="hero-ctas">
           <Button size="lg" onClick={() => navigate('/onboarding')}>Start free — 14 days</Button>
-          <Button variant="ghost" size="lg" onClick={() => navigate('/app/dashboard')}>
+          <Button variant="ghost" size="lg" className="hero-cta-secondary" onClick={() => navigate('/app/dashboard')}>
             See the dashboard →
           </Button>
         </div>

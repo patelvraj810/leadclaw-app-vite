@@ -7,13 +7,7 @@ export function Integrations() {
   };
 
   return (
-    <div className="page active" id="p-int">
-      <div className="topbar">
-        <div>
-          <div className="tb-title">Integrations</div>
-          <div className="tb-sub">Connect your channels and tools</div>
-        </div>
-      </div>
+    <div className="page active" id="p-int" style={{ padding: '0' }}>
       <div style={{ padding: '22px 24px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '13px' }}>
 

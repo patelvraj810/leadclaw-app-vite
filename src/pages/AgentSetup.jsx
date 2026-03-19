@@ -10,16 +10,7 @@ export function AgentSetup() {
   const previewName = `${name || 'Alex'} — ${biz || "Mike's HVAC"}`;
 
   return (
-    <div className="page active" id="p-agent">
-      <div className="topbar">
-        <div>
-          <div className="tb-title">AI Agent Setup</div>
-          <div className="tb-sub">Customise how your AI agent talks to leads</div>
-        </div>
-        <div style={{ display: 'flex', gap: '9px', alignItems: 'center' }}>
-          <button className="btn btn-dark btn-sm" onClick={() => alert('Settings saved!')}>Save changes</button>
-        </div>
-      </div>
+    <div className="page active" id="p-agent" style={{ padding: '0' }}>
       <div style={{ padding: '22px 24px' }}>
         <div className="agent-grid">
           <div style={{ display: 'flex', flexDirection: 'column', gap: '13px' }}>

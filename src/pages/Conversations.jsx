@@ -5,6 +5,7 @@ import { Tag } from '../components/ui/Tag';
 
 export function Conversations() {
   const [activeId, setActiveId] = useState('sarah');
+  const [showList, setShowList] = useState(true);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState({});
   const msgsEndRef = useRef(null);
@@ -23,6 +24,7 @@ export function Conversations() {
     const idParam = searchParams.get('id');
     if (idParam && convData[idParam]) {
       setActiveId(idParam);
+      setShowList(false);
     }
   }, [location.search]);
 
@@ -49,18 +51,20 @@ export function Conversations() {
 
   return (
     <div className="page active" id="p-conv" style={{ padding: 0 }}>
-      <div className="topbar" style={{ padding: '13px 18px', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ fontFamily: "'Clash Display', sans-serif", fontSize: '17px', fontWeight: '600' }}>Conversations</div>
-        <Tag color="green">2 active</Tag>
-      </div>
       <div className="conv-layout">
-      <div className="conv-list">
-        <div className="cl-head">All conversations</div>
+      <div className={`conv-list ${!showList ? 'hidden-mobile' : ''}`}>
+        <div className="cl-head">
+          All conversations
+          <Tag color="green">2 active</Tag>
+        </div>
         {Object.values(convData).map(c => (
           <div 
             key={c.id}
             className={`cli ${activeId === c.id ? 'active' : ''}`}
-            onClick={() => setActiveId(c.id)}
+            onClick={() => {
+              setActiveId(c.id);
+              setShowList(false);
+            }}
           >
             <div className="cli-top">
               <div className="cli-name" style={{ fontWeight: c.id === 'sarah' ? '600' : '500' }}>
@@ -83,9 +87,16 @@ export function Conversations() {
         ))}
       </div>
       
-      <div className="conv-main">
+      <div className={`conv-main ${showList ? 'hidden-mobile' : ''}`}>
         <div className="conv-top">
           <div className="conv-info">
+            <button 
+              className="mobile-only" 
+              onClick={() => setShowList(true)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '5px', marginRight: '5px' }}
+            >
+              ←
+            </button>
             <div className="cav" style={{ background: c => c.bgColor || 'var(--text)' }}>{activeConv.av}</div>
             <div>
               <div style={{ fontSize: '14px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
