@@ -1,98 +1,105 @@
-import React from 'react';
-import { Card, CardHeader, CardTitle, CardBody } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Tag } from '../components/ui/Tag';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Plus, Send, MessageSquare, Mail, Users } from 'lucide-react';
+
+const CAMPAIGN_TYPES = [
+  { icon: <MessageSquare size={20} />, name: 'WhatsApp Blast', desc: 'Send a message to all leads in a status (e.g. "following up" with unqualified leads)', available: true },
+  { icon: <Mail size={20} />, name: 'Email Sequence', desc: '3-touch automated email follow-up sequence for new leads', available: true },
+  { icon: <Users size={20} />, name: 'Re-engagement', desc: 'Automatically re-engage cold leads after 7 days of no response', available: true },
+  { icon: <Send size={20} />, name: 'Win-back', desc: 'Follow up with leads marked as lost after 30 days', available: false },
+  { icon: <MessageSquare size={20} />, name: 'Review Request', desc: 'Send a review request to completed jobs via WhatsApp or SMS', available: false },
+];
 
 export function Campaigns() {
+  const navigate = useNavigate();
+  const [showNew, setShowNew] = useState(false);
+
   return (
     <div className="page active" id="p-camp" style={{ padding: '0' }}>
       <div style={{ padding: '22px 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>🌱 Cold Lead Re-engagement</CardTitle>
-            <Tag color="green">Active</Tag>
-          </CardHeader>
-          <CardBody>
-            <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
-              Auto follow-up for leads who didn't respond. Day 1, 3, 7, 14 — different angle each time.
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '14px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '7px 10px', background: 'var(--green-bg)', borderRadius: 'var(--r)' }}>
-                <span>Day 1 — "Did my message come through?"</span>
-                <Tag color="green" style={{ fontSize: '10px', padding: '1px 6px' }}>Sent 12</Tag>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '7px 10px', background: 'var(--surface2)', borderRadius: 'var(--r)' }}>
-                <span>Day 3 — Seasonal tip + soft pitch</span>
-                <Tag color="gray" style={{ fontSize: '10px', padding: '1px 6px' }}>Queued 5</Tag>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '7px 10px', background: 'var(--surface2)', borderRadius: 'var(--r)' }}>
-                <span>Day 7 — Customer story re-engage</span>
-                <Tag color="gray" style={{ fontSize: '10px', padding: '1px 6px' }}>Queued 3</Tag>
-              </div>
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <Button variant="ghost" size="sm" style={{ padding: '6px 14px', fontSize: '12px' }}>Edit sequence</Button>
-              <Button variant="ghost" size="sm" style={{ padding: '6px 14px', fontSize: '12px' }}>View stats</Button>
-            </div>
-          </CardBody>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>🎣 Facebook Group Hunter</CardTitle>
-            <Tag color="green">Running</Tag>
-          </CardHeader>
-          <CardBody>
-             <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '12px' }}>
-              AI monitors 3 Facebook groups every 2 hours, comments on relevant posts, then DMs engaged users.
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '14px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '7px 10px', background: 'var(--surface2)', borderRadius: 'var(--r)' }}>
-                <span>Brampton Homeowners</span>
-                <span style={{ fontSize: '11px', color: 'var(--green)' }}>7 leads this month</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '7px 10px', background: 'var(--surface2)', borderRadius: 'var(--r)' }}>
-                <span>Mississauga Home Services</span>
-                <span style={{ fontSize: '11px', color: 'var(--green)' }}>6 leads this month</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '7px 10px', background: 'var(--surface2)', borderRadius: 'var(--r)' }}>
-                <span>Toronto HVAC & Plumbing Help</span>
-                <span style={{ fontSize: '11px', color: 'var(--green)' }}>5 leads this month</span>
-              </div>
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <Button variant="ghost" size="sm" style={{ padding: '6px 14px', fontSize: '12px' }}>+ Add group</Button>
-              <Button variant="ghost" size="sm" style={{ padding: '6px 14px', fontSize: '12px' }}>Edit settings</Button>
-            </div>
-          </CardBody>
-        </Card>
-
-        <div 
-          onClick={() => alert('Create a Google Ads campaign — connect your account first')}
-          style={{ cursor: 'pointer', border: '1.5px dashed var(--border2)', borderRadius: 'var(--rl)', background: 'transparent' }}
-        >
-          <div style={{ textAlign: 'center', padding: '32px 18px' }}>
-             <div style={{ fontSize: '28px', marginBottom: '10px' }}>📢</div>
-             <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '5px' }}>Google Ads Campaign</div>
-             <div style={{ fontSize: '13px', color: 'var(--text3)', marginBottom: '14px' }}>Connect your Google Ads account and let AI manage the full funnel — ad to booking.</div>
-             <Button variant="dark" size="sm" style={{ padding: '6px 14px', fontSize: '12px' }}>Set up →</Button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+          <div>
+            <h2 style={{ fontSize: '18px', fontWeight: '700', margin: 0 }}>Campaigns</h2>
+            <p style={{ fontSize: '13px', color: 'var(--text3)', marginTop: '4px' }}>
+              Outreach sequences your AI agent runs automatically — no manual work.
+            </p>
           </div>
+          <button
+            onClick={() => setShowNew(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              padding: '8px 14px', borderRadius: 'var(--r)', border: 'none',
+              background: 'var(--text)', color: 'var(--bg)',
+              fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+            }}
+          >
+            <Plus size={14} />
+            New Campaign
+          </button>
         </div>
 
-        <div 
-          onClick={() => alert('Create a Facebook Ads campaign — connect your Meta account first')}
-          style={{ cursor: 'pointer', border: '1.5px dashed var(--border2)', borderRadius: 'var(--rl)', background: 'transparent' }}
-        >
-          <div style={{ textAlign: 'center', padding: '32px 18px' }}>
-             <div style={{ fontSize: '28px', marginBottom: '10px' }}>📘</div>
-             <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '5px' }}>Facebook Ads Campaign</div>
-             <div style={{ fontSize: '13px', color: 'var(--text3)', marginBottom: '14px' }}>Lead form ads → AI response in seconds. Connect Meta Business and go live today.</div>
-             <Button variant="dark" size="sm" style={{ padding: '6px 14px', fontSize: '12px' }}>Set up →</Button>
+        {showNew && (
+          <div style={{
+            background: 'var(--surface)', border: '1px solid var(--border)',
+            borderRadius: 'var(--r)', padding: '20px', marginBottom: '20px',
+          }}>
+            <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '16px' }}>Choose a campaign type</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '10px' }}>
+              {CAMPAIGN_TYPES.map((t) => (
+                <button
+                  key={t.name}
+                  disabled={!t.available}
+                  style={{
+                    display: 'flex', alignItems: 'flex-start', gap: '12px',
+                    padding: '14px', borderRadius: 'var(--r)',
+                    border: '1px solid var(--border)', background: 'var(--surface2)',
+                    textAlign: 'left', cursor: t.available ? 'pointer' : 'not-allowed',
+                    opacity: t.available ? 1 : 0.5,
+                  }}
+                  onClick={() => t.available && alert('Campaign builder coming in the next update!')}
+                >
+                  <span style={{ color: 'var(--text2)', marginTop: '2px', flexShrink: 0 }}>{t.icon}</span>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text)' }}>
+                      {t.name} {!t.available && <span style={{ fontSize: '10px', color: 'var(--text3)', fontWeight: 400 }}>· coming soon</span>}
+                    </div>
+                    <div style={{ fontSize: '12px', color: 'var(--text3)', marginTop: '3px', lineHeight: 1.5 }}>{t.desc}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowNew(false)}
+              style={{ marginTop: '16px', background: 'none', border: 'none', color: 'var(--text3)', cursor: 'pointer', fontSize: '13px' }}
+            >
+              Cancel
+            </button>
           </div>
-        </div>
-        
+        )}
+
+        {/* Empty state when no active campaigns */}
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', minHeight: '40vh', gap: '12px', textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '48px' }}>📣</div>
+          <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text)' }}>
+            No active campaigns
+          </div>
+          <div style={{ fontSize: '13px', color: 'var(--text3)', maxWidth: '340px', lineHeight: 1.6 }}>
+            Create a campaign to automate follow-up sequences. Your AI agent handles all the messages — you just watch leads warm up.
+          </div>
+          <button
+            onClick={() => setShowNew(true)}
+            style={{
+              marginTop: '8px', padding: '10px 20px',
+              borderRadius: 'var(--r)', border: '1px solid var(--border)',
+              background: 'var(--surface)', color: 'var(--text)',
+              fontSize: '13px', fontWeight: '600', cursor: 'pointer',
+            }}
+          >
+            Create first campaign →
+          </button>
         </div>
       </div>
     </div>

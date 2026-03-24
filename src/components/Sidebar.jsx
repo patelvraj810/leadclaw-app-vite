@@ -1,64 +1,78 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  MessageSquare, 
-  LineChart, 
-  Cpu, 
+import { useAuth } from '../context/AuthContext';
+import {
+  LayoutDashboard,
+  Users,
+  MessageSquare,
+  LineChart,
+  Cpu,
   Plug,
   Globe,
   Send,
-  X
+  Calendar,
+  Settings,
+  DollarSign,
+  X,
 } from 'lucide-react';
 
-export function Sidebar({ isOpen, onClose }) {
+export function Sidebar({ isOpen, onClose, stats }) {
+  const { user } = useAuth();
+  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
+  const userName = user?.name || 'New User';
+  const userPlan = user?.plan ? (user.plan.charAt(0).toUpperCase() + user.plan.slice(1) + ' Plan') : 'Starter Plan';
+
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sb-logo">
-        <div className="logo-dot"></div>
-        <span className="sb-logo-text">LeadClaw</span>
-        <span className="sb-version">v2.0</span>
-        <button 
-          className="menu-toggle" 
+        <div className="sb-logo-mark">
+          <div className="logo-dot"></div>
+        </div>
+        <div className="sb-brand">
+          <span className="sb-logo-text">Matchit</span>
+          <span className="sb-logo-sub">AI sales command</span>
+        </div>
+        <span className="sb-version">LIVE</span>
+        <button
+          className="menu-toggle"
           onClick={onClose}
         >
           <X size={18} />
         </button>
       </div>
-      
+
       <div className="sb-nav">
         <div className="sb-section">Overview</div>
-        
-        <NavLink 
-          to="/app/dashboard" 
+
+        <NavLink
+          to="/app/dashboard"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <LayoutDashboard size={15} strokeWidth={1.5} />
           Dashboard
         </NavLink>
-        
-        <NavLink 
-          to="/app/leads" 
+
+        <NavLink
+          to="/app/leads"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Users size={15} strokeWidth={1.5} />
-          Leads <span className="nb-badge">4</span>
+          Leads {stats?.totalLeads ? <span className="nb-badge">{stats.totalLeads}</span> : null}
         </NavLink>
-        
-        <NavLink 
-          to="/app/conversations" 
+
+        <NavLink
+          to="/app/conversations"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <MessageSquare size={15} strokeWidth={1.5} />
-          Conversations <span className="nb-badge">2</span>
+          Conversations {stats?.totalConversations ? <span className="nb-badge">{stats.totalConversations}</span> : null}
         </NavLink>
-        
-        <NavLink 
-          to="/app/analytics" 
+
+        <NavLink
+          to="/app/analytics"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
@@ -66,19 +80,28 @@ export function Sidebar({ isOpen, onClose }) {
           Analytics
         </NavLink>
 
+        <NavLink
+          to="/app/jobs"
+          onClick={onClose}
+          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
+        >
+          <Calendar size={15} strokeWidth={1.5} />
+          Jobs
+        </NavLink>
+
         <div className="sb-section">Lead Generation</div>
-        
-        <NavLink 
-          to="/app/sources" 
+
+        <NavLink
+          to="/app/sources"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Globe size={15} strokeWidth={1.5} />
-          Lead Sources <span className="nb-badge orange">3</span>
+          Lead Sources
         </NavLink>
 
-        <NavLink 
-          to="/app/campaigns" 
+        <NavLink
+          to="/app/campaigns"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
@@ -87,29 +110,47 @@ export function Sidebar({ isOpen, onClose }) {
         </NavLink>
 
         <div className="sb-section">Configuration</div>
-        
-        <NavLink 
-          to="/app/agent" 
+
+        <NavLink
+          to="/app/agent"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Cpu size={15} strokeWidth={1.5} />
           AI Agent
         </NavLink>
-        
-        <NavLink 
-          to="/app/integrations" 
+
+        <NavLink
+          to="/app/integrations"
           onClick={onClose}
           className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
         >
           <Plug size={15} strokeWidth={1.5} />
           Integrations
         </NavLink>
+
+        <NavLink
+          to="/app/pricebook"
+          onClick={onClose}
+          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
+        >
+          <DollarSign size={15} strokeWidth={1.5} />
+          Price Book
+        </NavLink>
+
+        <NavLink
+          to="/app/settings"
+          onClick={onClose}
+          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
+        >
+          <Settings size={15} strokeWidth={1.5} />
+          Settings
+        </NavLink>
       </div>
 
       <div className="sb-bottom">
-        <NavLink 
-          to="/" 
+        <NavLink
+          to="/"
           onClick={onClose}
           className="nb mobile-only"
           style={{ marginBottom: '12px', border: '1px solid var(--border)', background: 'var(--surface2)' }}
@@ -117,11 +158,16 @@ export function Sidebar({ isOpen, onClose }) {
           <Globe size={15} strokeWidth={1.5} />
           Back to Website
         </NavLink>
+        <div className="sb-metric">
+          <div className="sb-metric-label">Pipeline this week</div>
+          <div className="sb-metric-value">{stats?.totalLeads ?? 0}</div>
+          <div className="sb-metric-sub">Live lead flow across all channels</div>
+        </div>
         <div className="user-pill">
-          <div className="u-av">M</div>
+          <div className="u-av">{userInitial}</div>
           <div>
-            <div className="u-name">Mike Johnson</div>
-            <div className="u-plan">Pro · 14-day trial</div>
+            <div className="u-name">{userName}</div>
+            <div className="u-plan">{userPlan}</div>
           </div>
         </div>
       </div>

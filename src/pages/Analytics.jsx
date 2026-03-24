@@ -1,124 +1,190 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { fetchStats, fetchAnalytics } from '../lib/api';
 import { Card, CardHeader, CardTitle, CardBody } from '../components/ui/Card';
 import { KpiCard } from '../components/ui/KpiCard';
 
 export function Analytics() {
+  const [stats, setStats] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [analyticsError, setAnalyticsError] = useState(false);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const s = await fetchStats();
+        setStats(s);
+      } catch (err) {
+        console.error('Failed to load stats:', err);
+      }
+      try {
+        const a = await fetchAnalytics();
+        setAnalytics(a);
+      } catch {
+        setAnalyticsError(true);
+      }
+      setLoading(false);
+    }
+    load();
+  }, []);
+
+  if (loading) {
+    return <div className="page active"><div className="loading">Loading...</div></div>;
+  }
+
+  const hasData = stats && (
+    (stats.totalLeads > 0) ||
+    (stats.totalConversations > 0) ||
+    (stats.qualified > 0)
+  );
+
+  if (!hasData) {
+    return (
+      <div className="page active" id="p-analytics" style={{ padding: '0' }}>
+        <div style={{ padding: '22px 24px' }}>
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            justifyContent: 'center', minHeight: '60vh', gap: '12px', textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text)' }}>
+              No data yet
+            </div>
+            <div style={{ fontSize: '13px', color: 'var(--text3)', maxWidth: '340px', lineHeight: 1.6 }}>
+              Start capturing leads to see your analytics.
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Derive source breakdown from analytics.leadsBySource or stats
+  const leadsBySource = analytics?.leadsBySource || stats?.leadsBySource || {};
+  const sourceEntries = Object.entries(leadsBySource).sort((a, b) => b[1] - a[1]);
+  const maxSourceCount = sourceEntries.length > 0 ? sourceEntries[0][1] : 1;
+
+  // Funnel
+  const funnelTotal = stats?.totalLeads || 0;
+  const funnelInProgress = stats?.inProgress || analytics?.inProgress || 0;
+  const funnelQualified = stats?.qualified || 0;
+  const conversionPct = funnelTotal > 0 ? Math.round((funnelQualified / funnelTotal) * 100) : 0;
+
+  // Trends
+  const thisMonth = stats?.thisMonth || analytics?.thisMonth || null;
+  const lastMonth = stats?.lastMonth || analytics?.lastMonth || null;
+  const trendDiff = (thisMonth != null && lastMonth != null)
+    ? thisMonth - lastMonth
+    : null;
+  const trendPct = (trendDiff != null && lastMonth > 0)
+    ? Math.round((trendDiff / lastMonth) * 100)
+    : null;
+
+  const qualRate = funnelTotal > 0 ? Math.round((funnelQualified / funnelTotal) * 100) : 0;
+
   return (
     <div className="page active" id="p-analytics" style={{ padding: '0' }}>
-      
       <div style={{ padding: '22px 24px' }}>
-        <div className="kpi-grid">
-          <KpiCard label="Total leads" value="64" change="↑ 34% this month" />
-          <KpiCard label="Qualified" value="46" change="72% qual rate" />
-          <KpiCard label="Booked" value="38" change="83% booking rate" />
-          <KpiCard label="Est. revenue" value="$11k" change="from AI-captured leads" />
+
+        {/* KPI row */}
+        <div className="kpi-grid" style={{ marginBottom: '20px' }}>
+          <KpiCard label="Total leads" value={stats?.totalLeads ?? '—'} change="" />
+          <KpiCard label="Qualified" value={`${stats?.qualified ?? '—'}${funnelTotal > 0 ? ` (${qualRate}%)` : ''}`} change="" />
+          <KpiCard label="Active conversations" value={stats?.totalConversations ?? '—'} change="" />
+          <KpiCard label="Avg response time" value={stats?.avgResponse ?? '—'} change="Industry avg: 4 hrs" />
         </div>
 
-        <div className="ag">
+        <div className="ag" style={{ marginBottom: '20px' }}>
+
+          {/* Lead source breakdown */}
           <Card>
-            <CardHeader><CardTitle>Leads by source</CardTitle></CardHeader>
+            <CardHeader><CardTitle>Lead source breakdown</CardTitle></CardHeader>
             <CardBody>
-              <div className="bg">
-                <div className="bi">
-                  <div className="bl">Facebook Groups</div>
-                  <div className="bt"><div className="bf" style={{ width: '72%', background: 'var(--purple)' }}></div></div>
-                  <div className="bv">18</div>
+              {sourceEntries.length === 0 ? (
+                <div style={{ fontSize: '13px', color: 'var(--text3)', textAlign: 'center', padding: '20px' }}>
+                  No source data available yet.
                 </div>
-                <div className="bi">
-                  <div className="bl">Google Ads</div>
-                  <div className="bt"><div className="bf" style={{ width: '60%' }}></div></div>
-                  <div className="bv">15</div>
+              ) : (
+                <div className="bg">
+                  {sourceEntries.map(([src, count]) => (
+                    <div key={src} className="bi">
+                      <div className="bl" style={{ textTransform: 'capitalize' }}>{src}</div>
+                      <div className="bt">
+                        <div
+                          className="bf"
+                          style={{ width: `${Math.round((count / maxSourceCount) * 100)}%` }}
+                        />
+                      </div>
+                      <div className="bv">{count}</div>
+                    </div>
+                  ))}
                 </div>
-                <div className="bi">
-                  <div className="bl">Website Form</div>
-                  <div className="bt"><div className="bf" style={{ width: '48%' }}></div></div>
-                  <div className="bv">12</div>
-                </div>
-                <div className="bi">
-                  <div className="bl">Instagram DMs</div>
-                  <div className="bt"><div className="bf" style={{ width: '36%', background: 'var(--red)' }}></div></div>
-                  <div className="bv">9</div>
-                </div>
-                <div className="bi">
-                  <div className="bl">Facebook Ads</div>
-                  <div className="bt"><div className="bf" style={{ width: '28%', background: '#1877f2' }}></div></div>
-                  <div className="bv">7</div>
-                </div>
-                <div className="bi">
-                  <div className="bl">Directory</div>
-                  <div className="bt"><div className="bf" style={{ width: '12%', background: 'var(--green)' }}></div></div>
-                  <div className="bv">3</div>
-                </div>
-              </div>
+              )}
             </CardBody>
           </Card>
 
+          {/* Qualification funnel */}
           <Card>
-            <CardHeader><CardTitle>Response time</CardTitle></CardHeader>
+            <CardHeader><CardTitle>Qualification funnel</CardTitle></CardHeader>
             <CardBody>
-              <div className="rt-big">
-                <div className="rt-num">34s</div>
-                <div className="rt-lbl">AI agent average</div>
-                <div style={{ margin: '12px 0', fontSize: '12px', color: 'var(--text3)' }}>
-                  Industry avg: <strong style={{ color: 'var(--red)' }}>4h 12m</strong>
-                </div>
-                <div style={{ padding: '10px 13px', background: 'var(--green-bg)', borderRadius: 'var(--r)', border: '1px solid var(--green-b)' }}>
-                  <div style={{ fontSize: '12px', color: 'var(--green)', fontWeight: '600' }}>You are 450x faster than average</div>
-                  <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '2px' }}>5-min response = 100x more conversions</div>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader><CardTitle>Agent mode breakdown</CardTitle></CardHeader>
-            <CardBody>
-              <div className="bg">
-                <div className="bi">
-                  <div className="bl">Qualifier</div>
-                  <div className="bt"><div className="bf" style={{ width: '68%', background: 'var(--blue)' }}></div></div>
-                  <div className="bv">44</div>
-                </div>
-                <div className="bi">
-                  <div className="bl">Closer</div>
-                  <div className="bt"><div className="bf" style={{ width: '59%', background: 'var(--green)' }}></div></div>
-                  <div className="bv">38</div>
-                </div>
-                <div className="bi">
-                  <div className="bl">Nurturer</div>
-                  <div className="bt"><div className="bf" style={{ width: '28%', background: 'var(--purple)' }}></div></div>
-                  <div className="bv">18</div>
-                </div>
-                <div className="bi">
-                  <div className="bl">Hunter</div>
-                  <div className="bt"><div className="bf" style={{ width: '22%', background: 'var(--amber)' }}></div></div>
-                  <div className="bv">14</div>
-                </div>
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardHeader><CardTitle>Conversion funnel</CardTitle></CardHeader>
-            <CardBody>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <div className="funnel-s">
-                  <span>Leads captured</span><span className="fv">64</span>
+                  <span>New leads</span>
+                  <span className="fv">{funnelTotal}</span>
                 </div>
-                <div className="funnel-s" style={{ marginLeft: '12px' }}>
-                  <span>AI contacted</span><span className="fv">64 <span style={{ fontSize: '10px', color: 'var(--green)' }}>100%</span></span>
+                <div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--text3)' }}>↓</div>
+                <div className="funnel-s">
+                  <span>In progress</span>
+                  <span className="fv">{funnelInProgress}</span>
                 </div>
-                <div className="funnel-s" style={{ marginLeft: '24px' }}>
-                  <span>Replied</span><span className="fv">46 <span style={{ fontSize: '10px', color: 'var(--green)' }}>72%</span></span>
+                <div style={{ textAlign: 'center', fontSize: '11px', color: 'var(--text3)' }}>↓</div>
+                <div className="funnel-s" style={{ background: 'var(--green-bg)', border: '1px solid var(--green-b)' }}>
+                  <span style={{ color: 'var(--green)', fontWeight: '500' }}>Qualified</span>
+                  <span className="fv" style={{ color: 'var(--green)' }}>{funnelQualified}</span>
                 </div>
-                <div className="funnel-s" style={{ marginLeft: '36px', background: 'var(--green-bg)', border: '1px solid var(--green-b)' }}>
-                  <span style={{ color: 'var(--green)' }}>Appointments booked</span>
-                  <span className="fv" style={{ color: 'var(--green)' }}>38 <span style={{ fontSize: '10px' }}>83%</span></span>
+                <div style={{ textAlign: 'center', marginTop: '8px' }}>
+                  <div className="rt-num" style={{ fontSize: '36px' }}>{conversionPct}%</div>
+                  <div className="rt-lbl">conversion rate</div>
                 </div>
               </div>
             </CardBody>
           </Card>
         </div>
+
+        {/* Recent trends */}
+        {(thisMonth != null || trendDiff != null) && (
+          <Card>
+            <CardHeader><CardTitle>Recent trends</CardTitle></CardHeader>
+            <CardBody>
+              <div style={{ fontSize: '14px', color: 'var(--text2)', lineHeight: 1.7 }}>
+                {thisMonth != null && (
+                  <div>
+                    <span style={{ fontWeight: '600', color: 'var(--text)' }}>{thisMonth}</span> leads this month
+                    {lastMonth != null && (
+                      <span> vs <span style={{ fontWeight: '600', color: 'var(--text)' }}>{lastMonth}</span> last month</span>
+                    )}
+                    {trendPct != null && (
+                      <span style={{ color: trendDiff >= 0 ? 'var(--green)' : 'var(--red)', fontWeight: '600', marginLeft: '6px' }}>
+                        ({trendDiff >= 0 ? '+' : ''}{trendPct}%)
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+              {analyticsError && (
+                <div style={{ marginTop: '12px', fontSize: '11px', color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace" }}>
+                  Full analytics endpoint not yet available — showing stats data only.
+                </div>
+              )}
+            </CardBody>
+          </Card>
+        )}
+
+        {analyticsError && !thisMonth && (
+          <div style={{ fontSize: '11px', color: 'var(--text3)', fontFamily: "'JetBrains Mono', monospace", marginTop: '8px' }}>
+            Full analytics endpoint not yet available — showing stats data only.
+          </div>
+        )}
+
       </div>
     </div>
   );

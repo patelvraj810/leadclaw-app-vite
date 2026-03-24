@@ -1,12 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
+import { fetchLeads, fetchConversations, fetchStats, submitFindRequest } from '../lib/api';
+import { getUser } from '../lib/auth';
 
 export function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [stats, setStats] = useState(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const data = await fetchStats();
+        const user = getUser();
+        setStats({
+          ...data,
+          userName: user?.name || user?.businessName || 'New User',
+          totalLeads: data?.totalLeads || 0,
+          totalConversations: data?.totalConversations || 0,
+        });
+      } catch (e) {
+        // silently fail - stats are optional
+      }
+    }
+    loadStats();
+  }, []);
 
   return (
     <div className="app">
@@ -14,11 +35,11 @@ export function Layout() {
         className={`sb-overlay ${isMenuOpen ? 'active' : ''}`} 
         onClick={() => setIsMenuOpen(false)}
       />
-      <Sidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <Sidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} stats={stats} />
       <main className="app-main">
-        <Topbar toggleMenu={toggleMenu} />
+        <Topbar toggleMenu={toggleMenu} isOpen={isMenuOpen} />
         <div style={{ padding: '0' }}>
-          <Outlet context={{ toggleMenu }} />
+          <Outlet context={{ toggleMenu, isMenuOpen, setIsMenuOpen }} />
         </div>
       </main>
     </div>

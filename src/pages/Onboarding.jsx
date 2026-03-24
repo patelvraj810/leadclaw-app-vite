@@ -13,7 +13,7 @@ export function Onboarding() {
   const nextStep = () => {
     if (step < 5) setStep(step + 1);
     else {
-      localStorage.setItem('leadclaw_user', firstName || 'Mike');
+      localStorage.setItem('matchit_user', firstName || 'Mike');
       navigate('/app/dashboard');
     }
   };

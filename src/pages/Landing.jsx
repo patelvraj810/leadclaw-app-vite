@@ -12,44 +12,100 @@ export function Landing() {
       <nav className="nav">
         <div className="logo">
           <div className="logo-dot"></div>
-          LeadClaw
+          Matchit
         </div>
         <div className={`nav-links ${isMenuOpen ? 'mobile-open' : ''}`}>
           <a href="#how" onClick={() => setIsMenuOpen(false)}>How it works</a>
           <a href="#pricing" onClick={() => setIsMenuOpen(false)}>Pricing</a>
           <a href="#industries" onClick={() => setIsMenuOpen(false)}>Industries</a>
-          <div className="mobile-only" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '10px', width: '100%' }}>
-            <Button variant="ghost" fullWidth onClick={() => navigate('/app/dashboard')}>Sign in</Button>
-            <Button fullWidth onClick={() => navigate('/onboarding')}>Start free trial</Button>
-          </div>
+          <a href="/find" onClick={() => setIsMenuOpen(false)}>Find a Pro</a>
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <div className="hidden-mobile" style={{ display: 'flex', gap: '8px' }}>
-            <Button variant="ghost" onClick={() => navigate('/app/dashboard')}>Sign in</Button>
-            <Button onClick={() => navigate('/onboarding')}>Start free trial</Button>
+          <div className="nav-cta-desktop">
+            <Button variant="ghost" onClick={() => navigate('/login')}>Sign in</Button>
+            <Button onClick={() => navigate('/signup')}>Start free trial</Button>
           </div>
-          <button className="menu-toggle mobile-only" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
+        </div>
+        {/* Mobile dropdown buttons */}
+        <div className={`nav-cta-mobile ${isMenuOpen ? 'active' : ''}`}>
+          <Button variant="ghost" fullWidth onClick={() => { navigate('/login'); setIsMenuOpen(false); }}>Sign in</Button>
+          <Button fullWidth onClick={() => { navigate('/signup'); setIsMenuOpen(false); }}>Start free trial</Button>
         </div>
       </nav>
 
       <section className="hero">
-        <div className="hero-badge">
-          <span style={{width:'6px',height:'6px',background:'var(--green)',borderRadius:'50%',display:'inline-block',marginRight:'8px'}}></span>
-          85% of homeowners call the next company after voicemail
+        <div className="hero-orb hero-orb-one"></div>
+        <div className="hero-orb hero-orb-two"></div>
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <div className="hero-badge">
+              <span className="hero-badge-dot"></span>
+              AI sales ops for local service businesses
+            </div>
+            <h1>Your service business,<br /><em>running like a live command center.</em></h1>
+            <p className="hero-sub">
+              Matchit responds to every lead in under 60 seconds, qualifies buyers, books jobs, and keeps your pipeline moving with an AI agent that never goes offline.
+            </p>
+            <div className="hero-ctas">
+              <Button size="lg" onClick={() => navigate('/signup')}>Start free for 14 days</Button>
+              <Button variant="ghost" size="lg" className="hero-cta-secondary" onClick={() => navigate('/login')}>
+                Sign in
+              </Button>
+            </div>
+            <p className="hero-note"><strong>No credit card.</strong> Launch in 10 minutes. Built for teams that need speed, not another admin tool.</p>
+          </div>
+
+          <div className="hero-panel">
+            <div className="hero-panel-top">
+              <div>
+                <div className="hero-panel-label">Live system</div>
+                <div className="hero-panel-title">Agent activity</div>
+              </div>
+              <div className="hero-live-pill">
+                <span className="hero-live-dot"></span>
+                Online
+              </div>
+            </div>
+
+            <div className="hero-signal-grid">
+              <div className="hero-signal-card">
+                <div className="hero-signal-value">43</div>
+                <div className="hero-signal-label">Leads captured this week</div>
+              </div>
+              <div className="hero-signal-card">
+                <div className="hero-signal-value">11m</div>
+                <div className="hero-signal-label">Average time to booked call</div>
+              </div>
+            </div>
+
+            <div className="hero-feed">
+              <div className="hero-feed-item">
+                <span className="hero-feed-dot green"></span>
+                <div>
+                  <div className="hero-feed-title">Emergency HVAC lead responded in 38 seconds</div>
+                  <div className="hero-feed-sub">Quoted, qualified, and handed off to booking flow</div>
+                </div>
+              </div>
+              <div className="hero-feed-item">
+                <span className="hero-feed-dot blue"></span>
+                <div>
+                  <div className="hero-feed-title">Facebook Group prospect moved to WhatsApp</div>
+                  <div className="hero-feed-sub">AI hunter detected intent and opened a conversation</div>
+                </div>
+              </div>
+              <div className="hero-feed-item">
+                <span className="hero-feed-dot amber"></span>
+                <div>
+                  <div className="hero-feed-title">Follow-up campaign recovered a cold estimate</div>
+                  <div className="hero-feed-sub">Nurturer agent re-engaged after 3 days of silence</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <h1>Your AI sales team.<br /><em>Always on. Always closing.</em></h1>
-        <p className="hero-sub">
-          LeadClaw finds leads, qualifies them, handles objections, and books the job — across every channel — while you're busy doing the actual work.
-        </p>
-        <div className="hero-ctas">
-          <Button size="lg" onClick={() => navigate('/onboarding')}>Start free — 14 days</Button>
-          <Button variant="ghost" size="lg" className="hero-cta-secondary" onClick={() => navigate('/app/dashboard')}>
-            See the dashboard →
-          </Button>
-        </div>
-        <p className="hero-note"><strong>No credit card.</strong> Set up in 10 minutes. Cancel anytime.</p>
       </section>
 
       <div className="stats">
@@ -62,14 +118,14 @@ export function Landing() {
       <div className="lsection">
         <div className="badge">Lead sources</div>
         <h2>You choose where<br />leads come from.</h2>
-        <div className="ls-grid">
+        <div className="ls-grid scroll-hint">
           <div className="ls-card"><span className="ls-icon">🌐</span><div className="ls-name">Website Form</div><div className="ls-desc">Paste one webhook URL. Every form submission triggers your AI instantly.</div><div className="ls-tag"><span className="tag tag-green">All plans</span></div></div>
           <div className="ls-card"><span className="ls-icon">📢</span><div className="ls-name">Google Ads</div><div className="ls-desc">Connect your account. Leads from your ads flow straight to the AI — no delay.</div><div className="ls-tag"><span className="tag tag-blue">Pro+</span></div></div>
           <div className="ls-card"><span className="ls-icon">📘</span><div className="ls-name">Facebook Ads</div><div className="ls-desc">Lead form ads connect directly. AI responds before the person closes the tab.</div><div className="ls-tag"><span className="tag tag-blue">Pro+</span></div></div>
           <div className="ls-card" style={{borderColor:'#ddd6fe',backgroundColor:'#faf5ff'}}><span className="ls-icon">👥</span><div className="ls-name">Facebook Groups</div><div className="ls-desc">AI monitors local groups, comments helpfully, then DMs interested people. Fully automated hunting.</div><div className="ls-tag"><span className="tag tag-purple">Premium</span></div></div>
           <div className="ls-card" style={{borderColor:'#ddd6fe',backgroundColor:'#faf5ff'}}><span className="ls-icon">📸</span><div className="ls-name">Instagram DMs</div><div className="ls-desc">AI responds to story replies and DMs — qualifies and books without you touching a phone.</div><div className="ls-tag"><span className="tag tag-purple">Premium</span></div></div>
           <div className="ls-card"><span className="ls-icon">⭐</span><div className="ls-name">Google Maps Alerts</div><div className="ls-desc">Monitor competitor reviews mentioning "slow response" — those are your leads.</div><div className="ls-tag"><span className="tag tag-blue">Pro+</span></div></div>
-          <div className="ls-card"><span className="ls-icon">🏠</span><div className="ls-name">LeadClaw Directory</div><div className="ls-desc">Listed on LeadClaw.io/find — homeowners search, your AI agent answers.</div><div className="ls-tag"><span className="tag tag-green">All plans</span></div></div>
+          <div className="ls-card"><span className="ls-icon">🏠</span><div className="ls-name">matchit Directory</div><div className="ls-desc">Listed on matchit.ai/find — homeowners search, your AI agent answers.</div><div className="ls-tag"><span className="tag tag-green">All plans</span></div></div>
           <div className="ls-card"><span className="ls-icon">🏗</span><div className="ls-name">Angi / HomeStars / Houzz</div><div className="ls-desc">Scrape and respond to quote requests before competitors even see them.</div><div className="ls-tag"><span className="tag tag-purple">Premium</span></div></div>
           <div className="ls-card"><span className="ls-icon">📋</span><div className="ls-name">Manual Import</div><div className="ls-desc">Upload a CSV, paste a list. AI starts working every contact immediately.</div><div className="ls-tag"><span className="tag tag-green">All plans</span></div></div>
         </div>
@@ -79,8 +135,8 @@ export function Landing() {
       <div className="lsection" style={{paddingTop:0}} id="how">
         <div className="badge">How it works</div>
         <h2>Set up once.<br />Convert forever.</h2>
-        <div className="steps3">
-          <div className="step"><span className="step-num">01</span><h3>Lead comes in</h3><p>From any source — form, ad, Facebook group, Instagram. LeadClaw catches it instantly regardless of channel.</p></div>
+        <div className="steps3 scroll-hint">
+          <div className="step"><span className="step-num">01</span><h3>Lead comes in</h3><p>From any source — form, ad, Facebook group, Instagram. Matchit catches it instantly regardless of channel.</p></div>
           <div className="step"><span className="step-num">02</span><h3>AI switches mode & sells</h3><p>Agent detects context — inbound vs outbound, warm vs cold — and picks the right sales approach. Not a FAQ bot. An actual closer.</p></div>
           <div className="step"><span className="step-num">03</span><h3>You just show up</h3><p>You get a notification: "Sarah, 2pm Thursday, AC repair, $89 deposit paid." Everything else was handled while you were on another job.</p></div>
         </div>
@@ -114,11 +170,49 @@ export function Landing() {
         </div>
       </div>
 
+      {/* FEATURES */}
+      <div className="lsection" style={{paddingTop:0}}>
+        <div className="badge">Features</div>
+        <h2>Everything your business needs.<br />One app.</h2>
+        <div className="features-grid scroll-hint">
+          <div className="feature-card">
+            <span className="feature-icon">🤖</span>
+            <div className="feature-name">AI Sales Agent</div>
+            <div className="feature-desc">Responds to every lead in 60 seconds — qualifies, handles objections, and books the job.</div>
+          </div>
+          <div className="feature-card">
+            <span className="feature-icon">📅</span>
+            <div className="feature-name">Smart Booking</div>
+            <div className="feature-desc">AI books, reminds, and follows up — calendar sync, SMS reminders, and re-engagement built in.</div>
+          </div>
+          <div className="feature-card">
+            <span className="feature-icon">📄</span>
+            <div className="feature-name">Invoicing</div>
+            <div className="feature-desc">Send invoices and collect payment via WhatsApp. Get paid faster without chasing.</div>
+          </div>
+          <div className="feature-card">
+            <span className="feature-icon">👥</span>
+            <div className="feature-name">Team Management</div>
+            <div className="feature-desc">Assign jobs, track field staff, and coordinate your whole team from one dashboard.</div>
+          </div>
+          <div className="feature-card">
+            <span className="feature-icon">📊</span>
+            <div className="feature-name">Analytics</div>
+            <div className="feature-desc">See what's working, fix what isn't. Full visibility into leads, conversions, and revenue.</div>
+          </div>
+          <div className="feature-card">
+            <span className="feature-icon">🔗</span>
+            <div className="feature-name">All Your Channels</div>
+            <div className="feature-desc">WhatsApp, email, Facebook, Google Ads — one AI agent across every channel your customers use.</div>
+          </div>
+        </div>
+      </div>
+
       {/* AGENT MODES */}
       <div className="lsection" style={{paddingTop:0}}>
         <div className="badge">AI Sales Intelligence</div>
         <h2>4 sales modes.<br />Zero manual effort.</h2>
-        <div className="modes-grid">
+        <div className="modes-grid scroll-hint">
           <div className="mode-card hunter"><span className="mode-icon">🎣</span><div className="mode-name">Hunter</div><div className="mode-desc">Finds leads proactively in Facebook Groups, review sites, competitor mentions. Comments helpfully, then DMs interested prospects.</div></div>
           <div className="mode-card qualifier"><span className="mode-icon">🎯</span><div className="mode-name">Qualifier</div><div className="mode-desc">Uses SPIN selling — uncovers situation, problem, implication, need. Makes the prospect realise they need help before the agent offers it.</div></div>
           <div className="mode-card closer"><span className="mode-icon">💰</span><div className="mode-name">Closer</div><div className="mode-desc">Creates urgency. Handles the 8 most common objections for your industry. Pushes for the booking or deposit — knows when to discount, when to hold.</div></div>
@@ -130,7 +224,7 @@ export function Landing() {
       <div className="lsection" style={{paddingTop:0}} id="industries">
         <div className="badge">Industries</div>
         <h2>Built for service<br />businesses like yours</h2>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:'12px'}}>
+        <div className="industries-grid scroll-hint">
           <div className="ls-card"><span className="ls-icon">🏠</span><div className="ls-name">Real Estate</div><div className="ls-desc">Qualify buyers and sellers, book showings, re-engage old enquiries automatically.</div></div>
           <div className="ls-card"><span className="ls-icon">❄️</span><div className="ls-name">HVAC</div><div className="ls-desc">Never miss an emergency call. AI handles after-hours leads and books same-day visits.</div></div>
           <div className="ls-card"><span className="ls-icon">🔧</span><div className="ls-name">Plumbing</div><div className="ls-desc">Capture urgent repair leads 24/7. Pre-qualify jobs before sending a tech out.</div></div>
@@ -150,7 +244,7 @@ export function Landing() {
             <div className="plan-price"><sup>$</sup>49</div><div className="plan-period">per month</div>
             <ul className="plan-features">
               <li>AI sales agent via email</li><li>Website form webhook</li><li>100 leads/month</li>
-              <li>Lead dashboard</li><li>Conversation history</li><li>LeadClaw directory listing</li>
+              <li>Lead dashboard</li><li>Conversation history</li><li>matchit directory listing</li>
             </ul>
             <Button variant="ghost" fullWidth onClick={() => navigate('/onboarding')}>Start free trial</Button>
           </div>
@@ -185,13 +279,13 @@ export function Landing() {
         <div className="badge">Case studies</div>
         <h2>Real businesses.<br />Real results.</h2>
         <div className="testi-grid">
-          <div className="testi"><div className="testi-stars">★★★★★</div><div className="testi-text">"I was losing 3–4 emergency calls a week while on jobs. LeadClaw paid for itself in the first week. Booked a $1,400 AC install from a lead that came in at 11pm."</div><div className="testi-author"><div className="testi-av" style={{background:'#7c3aed'}}>DM</div><div><div className="testi-name">Dave Miller</div><div className="testi-biz">Miller's HVAC · Brampton, ON</div></div></div></div>
-          <div className="testi"><div className="testi-stars">★★★★★</div><div className="testi-text">"My wife used to answer inquiry emails at night. Now LeadClaw handles everything — we went from 6 quotes a week to 11. Set up took 20 minutes."</div><div className="testi-author"><div className="testi-av" style={{background:'#16a34a'}}>TN</div><div><div className="testi-name">Tony Nguyen</div><div className="testi-biz">Clear Clean Co · Toronto, ON</div></div></div></div>
+          <div className="testi"><div className="testi-stars">★★★★★</div><div className="testi-text">"I was losing 3–4 emergency calls a week while on jobs. Matchit paid for itself in the first week. Booked a $1,400 AC install from a lead that came in at 11pm."</div><div className="testi-author"><div className="testi-av" style={{background:'#7c3aed'}}>DM</div><div><div className="testi-name">Dave Miller</div><div className="testi-biz">Miller's HVAC · Brampton, ON</div></div></div></div>
+          <div className="testi"><div className="testi-stars">★★★★★</div><div className="testi-text">"My wife used to answer inquiry emails at night. Now Matchit handles everything — we went from 6 quotes a week to 11. Set up took 20 minutes."</div><div className="testi-author"><div className="testi-av" style={{background:'#16a34a'}}>TN</div><div><div className="testi-name">Tony Nguyen</div><div className="testi-biz">Clear Clean Co · Toronto, ON</div></div></div></div>
           <div className="testi"><div className="testi-stars">★★★★★</div><div className="testi-text">"The Facebook Groups feature is insane. My agent found 8 people asking for AC recommendations last week and booked 3 of them. I didn't do a thing."</div><div className="testi-author"><div className="testi-av" style={{background:'#2563eb'}}>SR</div><div><div className="testi-name">Sandra Reid</div><div className="testi-biz">Reid Realty Group · Mississauga, ON</div></div></div></div>
         </div>
         <div style={{textAlign:'center',marginTop:'24px',padding:'20px',background:'var(--surface)',border:'1px solid var(--border)',borderRadius:'var(--rl)'}}>
-          <div style={{fontFamily:'"Clash Display", sans-serif',fontSize:'20px',fontWeight:700,marginBottom:'5px'}}>Join 340+ service businesses already using LeadClaw</div>
-          <div style={{fontSize:'13px',color:'var(--text3)',marginBottom:'16px'}}>Built with LeadClaw. Sold with LeadClaw. The platform sells itself.</div>
+          <div style={{fontFamily:'"Clash Display", sans-serif',fontSize:'20px',fontWeight:700,marginBottom:'5px'}}>Join 340+ service businesses already using Matchit</div>
+          <div style={{fontSize:'13px',color:'var(--text3)',marginBottom:'16px'}}>Built with Matchit. Sold with Matchit. The platform sells itself.</div>
           <Button size="lg" onClick={() => navigate('/onboarding')}>Start your 14-day free trial →</Button>
         </div>
       </div>
@@ -211,8 +305,8 @@ export function Landing() {
       </div>
 
       <footer>
-        <div style={{fontFamily:'"Clash Display", sans-serif',fontSize:'17px',fontWeight:700}}>LeadClaw</div>
-        <div style={{fontSize:'13px',color:'var(--text3)'}}>© 2026 LeadClaw · AI Sales OS for Service Businesses</div>
+        <div style={{fontFamily:'"Clash Display", sans-serif',fontSize:'17px',fontWeight:700}}>Matchit</div>
+        <div style={{fontSize:'13px',color:'var(--text3)'}}>© 2026 Matchit · matchit.ai</div>
         <div style={{display:'flex',gap:'14px',marginTop:'12px'}}><a href="#" style={{fontSize:'13px',color:'var(--text3)',textDecoration:'none'}}>Privacy</a><a href="#" style={{fontSize:'13px',color:'var(--text3)',textDecoration:'none'}}>Terms</a></div>
       </footer>
     </>

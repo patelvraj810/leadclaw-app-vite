@@ -1,12 +1,19 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
-export function Topbar({ toggleMenu }) {
+// Static AI Online indicator — would poll /api/health in a production implementation
+const AiOnlineIndicator = () => (
+  <div className="tag tag-green" style={{ fontSize: '12px', padding: '5px 12px' }}>
+    <span className="src-dot" style={{ background: 'var(--green)' }}></span>
+    {' '}AI Online
+  </div>
+);
+
+export function Topbar({ toggleMenu, isOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Determine title and subtitle based on current route
   let title = 'Dashboard';
   let sub = 'Good morning — your AI agent is active';
   let actions = null;
@@ -14,7 +21,6 @@ export function Topbar({ toggleMenu }) {
   if (location.pathname.includes('/app/leads')) {
     title = 'Leads';
     sub = 'All leads captured by your AI agent';
-    actions = <Button onClick={() => alert('Connect your lead form webhook to start capturing leads automatically.')}>+ Add lead</Button>;
   } else if (location.pathname.includes('/app/conversations')) {
     title = 'Conversations';
     sub = 'Live AI agent conversations';
@@ -24,7 +30,6 @@ export function Topbar({ toggleMenu }) {
   } else if (location.pathname.includes('/app/agent')) {
     title = 'AI Agent Setup';
     sub = 'Customise how your AI agent talks to leads';
-    actions = <Button onClick={() => alert('Settings saved!')}>Save changes</Button>;
   } else if (location.pathname.includes('/app/integrations')) {
     title = 'Integrations';
     sub = 'Connect your channels and tools';
@@ -34,13 +39,19 @@ export function Topbar({ toggleMenu }) {
   } else if (location.pathname.includes('/app/campaigns')) {
     title = 'Campaigns';
     sub = 'Active outreach campaigns';
+  } else if (location.pathname.includes('/app/jobs')) {
+    title = 'Jobs';
+    sub = 'Manage your scheduled jobs';
+  } else if (location.pathname.includes('/app/settings')) {
+    title = 'Settings';
+    sub = 'Manage your account and preferences';
+  } else if (location.pathname.includes('/app/pricebook')) {
+    title = 'Price Book';
+    sub = 'Your services and pricing catalogue';
   } else if (location.pathname.includes('/app/dashboard')) {
     actions = (
       <div className="hidden-mobile" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <div className="tag tag-green" style={{ fontSize: '12px', padding: '5px 12px' }}>
-          <span className="src-dot" style={{ background: 'var(--green)' }}></span>
-          {' '}AI Online
-        </div>
+        <AiOnlineIndicator />
         <Button variant="ghost" style={{ fontSize: '13px' }} onClick={() => navigate('/')}>
           ← Site
         </Button>
@@ -50,16 +61,22 @@ export function Topbar({ toggleMenu }) {
 
   return (
     <div className="topbar">
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <button className="menu-toggle" onClick={toggleMenu}>
-          <Menu size={20} />
+      <div className="topbar-main">
+        <button className="menu-toggle" onClick={toggleMenu} aria-label="Toggle menu">
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
         <div>
           <div className="tb-title">{title}</div>
           <div className="tb-sub">{sub}</div>
         </div>
       </div>
-      {actions && <div>{actions}</div>}
+      <div className="topbar-actions">
+        <div className="topbar-status hidden-mobile">
+          <span className="topbar-status-dot"></span>
+          AI orchestration live
+        </div>
+        {actions && <div>{actions}</div>}
+      </div>
     </div>
   );
 }
