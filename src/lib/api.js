@@ -36,3 +36,7 @@ export const deletePricebookItem = (id) => apiFetch(`/api/pricebook/${id}`, { me
 export const fetchChannels = () => apiFetch('/api/channels');
 export const saveChannel = (data) => apiFetch('/api/channels', { method: 'POST', body: JSON.stringify(data) });
 export const submitFindRequest = (data) => apiFetch('/api/find/request', { method: 'POST', body: JSON.stringify(data) });
+export const fetchOnboardingStatus = () => apiFetch('/api/onboarding/status');
+export const completeOnboarding = (data) => apiFetch('/api/onboarding/complete', { method: 'POST', body: JSON.stringify(data) });
+export const fetchKnowledgeBase = () => apiFetch('/api/onboarding/knowledge');
+export const saveKnowledgeDoc = (data) => apiFetch('/api/onboarding/knowledge', { method: 'POST', body: JSON.stringify(data) });

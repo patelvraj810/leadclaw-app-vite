@@ -66,7 +66,7 @@ export function Signup() {
     setLoading(true);
     try {
       await signup(formData.name, formData.email, formData.password, formData.businessName, formData.industry);
-      navigate('/app/dashboard');
+      navigate('/onboarding');
     } catch (err) {
       setError(err.message || 'Signup failed. Please try again.');
     } finally {

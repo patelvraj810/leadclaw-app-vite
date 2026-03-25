@@ -56,8 +56,15 @@ function AppRoutes() {
         <Route path="pricebook" element={<PriceBook />} />
       </Route>
 
-      {/* Redirect shortcuts */}
-      <Route path="/onboarding" element={<Navigate to="/signup" replace />} />
+      {/* Onboarding — protected but outside main app layout */}
+      <Route
+        path="/onboarding"
+        element={
+          <ProtectedRoute>
+            <Onboarding />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/dashboard" element={<Navigate to="/app/dashboard" replace />} />
       <Route path="/leads" element={<Navigate to="/app/leads" replace />} />
       <Route path="/conversations" element={<Navigate to="/app/conversations" replace />} />
