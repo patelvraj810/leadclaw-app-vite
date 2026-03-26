@@ -57,7 +57,7 @@ export function Leads() {
   const selectedLead = filtered.find((lead) => lead.id === selectedLeadId) || filtered[0] || null;
 
   return (
-    <div className="page active surface-page" id="p-leads" style={{ padding: '24px' }}>
+    <div className="page active surface-page" id="p-leads">
       <section className="page-hero leads-hero">
         <div>
           <div className="page-eyebrow">Lead pipeline</div>

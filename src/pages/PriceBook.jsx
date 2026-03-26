@@ -150,8 +150,7 @@ export function PriceBook() {
   };
 
   return (
-    <div className="page active" id="p-pricebook" style={{ padding: '0' }}>
-      <div style={{ padding: '22px 24px' }}>
+    <div className="page active" id="p-pricebook">
 
         {/* Header */}
         <section className="page-hero">
@@ -336,7 +335,6 @@ export function PriceBook() {
             );
           })
         )}
-      </div>
     </div>
   );
 }
