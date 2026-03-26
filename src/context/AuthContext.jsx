@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { login as apiLogin, signup as apiSignup, logout as apiLogout, getUser, isAuthenticated, verifyAuth } from '../lib/auth';
+import { login as apiLogin, signup as apiSignup, logout as apiLogout, isAuthenticated, verifyAuth } from '../lib/auth';
 
 const AuthContext = createContext(null);
 
@@ -10,12 +10,13 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function checkAuth() {
       if (isAuthenticated()) {
+        // verifyAuth hits /auth/me. If token is invalid or expired it clears storage
+        // and returns null. Never fall back to stale localStorage user data.
         const verifiedUser = await verifyAuth();
         if (verifiedUser) {
           setUser(verifiedUser);
-        } else {
-          setUser(getUser());
         }
+        // If verifiedUser is null, session was cleared by verifyAuth — stay logged out
       }
       setLoading(false);
     }
@@ -51,6 +52,7 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

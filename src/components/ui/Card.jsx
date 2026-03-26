@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function Card({ children, className = '', id, ...props }) {
   return (
     <div className={`card ${className}`} id={id} {...props}>

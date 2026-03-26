@@ -2,11 +2,28 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { Menu, X } from 'lucide-react';
 
-// Static AI Online indicator — would poll /api/health in a production implementation
-const AiOnlineIndicator = () => (
-  <div className="tag tag-green" style={{ fontSize: '12px', padding: '5px 12px' }}>
-    <span className="src-dot" style={{ background: 'var(--green)' }}></span>
-    {' '}AI Online
+const ROUTE_META = {
+  '/app/dashboard':     { title: 'Dashboard',     sub: 'Live AI revenue engine' },
+  '/app/leads':         { title: 'Leads',          sub: 'All leads captured by your AI agent' },
+  '/app/conversations': { title: 'Inbox',           sub: 'Live AI agent conversations' },
+  '/app/analytics':     { title: 'Analytics',       sub: 'Last 30 days performance' },
+  '/app/agent':         { title: 'AI Agent',         sub: 'Customise how your agent talks to leads' },
+  '/app/integrations':  { title: 'Integrations',    sub: 'Connect your channels and tools' },
+  '/app/sources':       { title: 'Lead Sources',    sub: 'Manage your capture channels' },
+  '/app/campaigns':     { title: 'Campaigns',       sub: 'Active outreach campaigns' },
+  '/app/jobs':          { title: 'Jobs',             sub: 'Manage your scheduled jobs' },
+  '/app/settings':      { title: 'Settings',         sub: 'Account and preferences' },
+  '/app/pricebook':     { title: 'Price Book',       sub: 'Your services and pricing catalogue' },
+  '/app/estimates':     { title: 'Estimates',        sub: 'Pre-booking conversion pipeline' },
+  '/app/team':          { title: 'Team',             sub: 'Manage your technicians and staff' },
+  '/app/field':         { title: 'Field',            sub: 'Technician job workflow' },
+  '/app/invoices':      { title: 'Invoices',         sub: 'Turn completed work into collected revenue' },
+};
+
+const AiStatus = () => (
+  <div className="topbar-status">
+    <span className="topbar-status-dot" />
+    AI live
   </div>
 );
 
@@ -14,50 +31,8 @@ export function Topbar({ toggleMenu, isOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  let title = 'Dashboard';
-  let sub = 'Good morning — your AI agent is active';
-  let actions = null;
-
-  if (location.pathname.includes('/app/leads')) {
-    title = 'Leads';
-    sub = 'All leads captured by your AI agent';
-  } else if (location.pathname.includes('/app/conversations')) {
-    title = 'Conversations';
-    sub = 'Live AI agent conversations';
-  } else if (location.pathname.includes('/app/analytics')) {
-    title = 'Analytics';
-    sub = 'Last 30 days performance';
-  } else if (location.pathname.includes('/app/agent')) {
-    title = 'AI Agent Setup';
-    sub = 'Customise how your AI agent talks to leads';
-  } else if (location.pathname.includes('/app/integrations')) {
-    title = 'Integrations';
-    sub = 'Connect your channels and tools';
-  } else if (location.pathname.includes('/app/sources')) {
-    title = 'Lead Sources';
-    sub = 'Manage your capture channels';
-  } else if (location.pathname.includes('/app/campaigns')) {
-    title = 'Campaigns';
-    sub = 'Active outreach campaigns';
-  } else if (location.pathname.includes('/app/jobs')) {
-    title = 'Jobs';
-    sub = 'Manage your scheduled jobs';
-  } else if (location.pathname.includes('/app/settings')) {
-    title = 'Settings';
-    sub = 'Manage your account and preferences';
-  } else if (location.pathname.includes('/app/pricebook')) {
-    title = 'Price Book';
-    sub = 'Your services and pricing catalogue';
-  } else if (location.pathname.includes('/app/dashboard')) {
-    actions = (
-      <div className="hidden-mobile" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <AiOnlineIndicator />
-        <Button variant="ghost" style={{ fontSize: '13px' }} onClick={() => navigate('/')}>
-          ← Site
-        </Button>
-      </div>
-    );
-  }
+  const match = Object.entries(ROUTE_META).find(([path]) => location.pathname.includes(path));
+  const { title, sub } = match?.[1] ?? { title: 'Matchit', sub: 'AI-powered service operations' };
 
   return (
     <div className="topbar">
@@ -71,11 +46,12 @@ export function Topbar({ toggleMenu, isOpen }) {
         </div>
       </div>
       <div className="topbar-actions">
-        <div className="topbar-status hidden-mobile">
-          <span className="topbar-status-dot"></span>
-          AI orchestration live
-        </div>
-        {actions && <div>{actions}</div>}
+        <AiStatus />
+        {location.pathname.includes('/app/dashboard') && (
+          <Button variant="ghost" size="sm" className="hidden-mobile" onClick={() => navigate('/')}>
+            ← Site
+          </Button>
+        )}
       </div>
     </div>
   );

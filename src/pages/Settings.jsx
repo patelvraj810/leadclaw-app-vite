@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchAgentSettings, saveAgentSettings, fetchChannels } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { Card, CardHeader, CardTitle, CardBody } from '../components/ui/Card';
 import { Tag } from '../components/ui/Tag';
+import { PageHero } from '../components/ui/PageHero';
 
 const TABS = [
   { key: 'profile',       label: 'Profile' },
   { key: 'channels',      label: 'Channels' },
   { key: 'notifications', label: 'Notifications' },
   { key: 'billing',       label: 'Billing' },
+  { key: 'account',       label: 'Account' },
 ];
 
 const INDUSTRIES = [
@@ -36,8 +39,8 @@ const CHANNEL_CATALOG = [
 function ProfileTab() {
   const { user } = useAuth();
   const [businessName, setBusinessName] = useState('');
-  const [ownerName, setOwnerName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [ownerName, setOwnerName] = useState(user?.name || '');
+  const [phone, setPhone] = useState(user?.phone || '');
   const [serviceArea, setServiceArea] = useState('');
   const [industry, setIndustry] = useState('');
   const [status, setStatus] = useState(null);
@@ -53,17 +56,19 @@ function ProfileTab() {
         }
       })
       .catch(() => {});
-    if (user) {
-      setOwnerName(user.name || '');
-      setPhone(user.phone || '');
-    }
-  }, [user]);
+  }, []);
 
   const handleSave = async () => {
     setStatus('saving');
     setError('');
     try {
-      await saveAgentSettings({ business_name: businessName, service_area: serviceArea, industry });
+      await saveAgentSettings({
+        business_name: businessName,
+        service_area: serviceArea,
+        industry,
+        owner_name: ownerName,
+        owner_phone: phone,
+      });
       setStatus('saved');
       setTimeout(() => setStatus(null), 2500);
     } catch (err) {
@@ -102,13 +107,24 @@ function ProfileTab() {
   );
 }
 
+// Which channels have a real setup guide in Integrations
+const CHANNEL_SETUP_TYPE = {
+  whatsapp: 'env',       // configured via Meta Cloud API keys
+  sms:      'api_key',   // Twilio
+  email:    'always_on',
+  instagram: 'coming_soon',
+  facebook:  'coming_soon',
+  webchat:   'webhook',
+  google_biz: 'coming_soon',
+};
+
 function ChannelsTab() {
+  const navigate = useNavigate();
   const [channels, setChannels] = useState({});
 
   useEffect(() => {
     fetchChannels()
       .then(data => {
-        // data expected to be an object or array of channel configs
         if (Array.isArray(data)) {
           const map = {};
           data.forEach(c => { map[c.type || c.key] = c; });
@@ -117,25 +133,29 @@ function ChannelsTab() {
           setChannels(data);
         }
       })
-      .catch(() => {
-        // channels endpoint not yet implemented — show all as not connected
-      });
+      .catch(() => {});
   }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '720px' }}>
+      <div style={{ fontSize: '13px', color: 'var(--text2)', marginBottom: '4px', lineHeight: 1.6 }}>
+        Channel connection setup is managed in <button onClick={() => navigate('/app/integrations')} style={{ background: 'none', border: 'none', color: 'var(--blue)', cursor: 'pointer', fontSize: '13px', padding: 0, textDecoration: 'underline' }}>Integrations</button>. This view shows the current connection status.
+      </div>
       {CHANNEL_CATALOG.map(ch => {
         const connData = channels[ch.key];
         const isConnected = ch.alwaysConnected || !!(connData?.connected || connData?.enabled);
+        const setupType = CHANNEL_SETUP_TYPE[ch.key];
+        const isComingSoon = setupType === 'coming_soon';
+
         return (
           <Card key={ch.key}>
             <CardBody>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
                     <span style={{ fontSize: '14px', fontWeight: '600' }}>{ch.name}</span>
-                    <Tag color={isConnected ? 'green' : 'gray'} style={{ fontSize: '10px' }}>
-                      {isConnected ? 'Connected' : 'Not connected'}
+                    <Tag color={isConnected ? 'green' : isComingSoon ? 'gray' : 'gray'} style={{ fontSize: '10px' }}>
+                      {isConnected ? 'Connected' : isComingSoon ? 'Coming soon' : 'Not connected'}
                     </Tag>
                   </div>
                   <div style={{ fontSize: '13px', color: 'var(--text2)' }}>{ch.desc}</div>
@@ -145,17 +165,20 @@ function ChannelsTab() {
                     </div>
                   )}
                 </div>
-                {!ch.alwaysConnected && (
-                  <button
-                    className="btn btn-ghost btn-sm"
-                    onClick={() => alert(`${ch.name} connection setup coming soon.`)}
-                    style={{ flexShrink: 0 }}
-                  >
-                    {isConnected ? 'Manage' : 'Connect'}
-                  </button>
-                )}
                 {ch.alwaysConnected && (
                   <span style={{ fontSize: '12px', color: 'var(--text3)', flexShrink: 0 }}>Always on</span>
+                )}
+                {!ch.alwaysConnected && !isComingSoon && (
+                  <button
+                    className="btn btn-ghost btn-sm"
+                    onClick={() => navigate('/app/integrations')}
+                    style={{ flexShrink: 0, fontSize: '12px' }}
+                  >
+                    {isConnected ? 'Manage →' : 'Set up →'}
+                  </button>
+                )}
+                {isComingSoon && (
+                  <span style={{ fontSize: '11px', color: 'var(--text3)', flexShrink: 0 }}>Roadmap</span>
                 )}
               </div>
             </CardBody>
@@ -166,45 +189,23 @@ function ChannelsTab() {
   );
 }
 
-function NotificationsTab() {
-  // NOTE: Backend does not yet have a /api/notifications endpoint.
-  // Notification preferences are saved to localStorage for now.
-  const STORAGE_KEY = 'matchit_notification_prefs';
+const NOTIF_STORAGE_KEY = 'matchit_notification_prefs';
+const NOTIF_DEFAULT_PREFS = {
+  morning_briefing: false,
+  morning_phone: '',
+  eod_summary: false,
+  eod_phone: '',
+  new_lead_alert: false,
+  new_lead_phone: '',
+  appt_reminder_24h: false,
+  appt_reminder_2h: false,
+  appt_reminder_30m: false,
+};
 
-  const defaultPrefs = {
-    morning_briefing: false,
-    morning_phone: '',
-    eod_summary: false,
-    eod_phone: '',
-    new_lead_alert: false,
-    new_lead_phone: '',
-    appt_reminder_24h: false,
-    appt_reminder_2h: false,
-    appt_reminder_30m: false,
-  };
-
-  const [prefs, setPrefs] = useState(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? { ...defaultPrefs, ...JSON.parse(stored) } : defaultPrefs;
-    } catch {
-      return defaultPrefs;
-    }
-  });
-  const [saved, setSaved] = useState(false);
-
-  const toggle = (key) => setPrefs(p => ({ ...p, [key]: !p[key] }));
-  const setField = (key, val) => setPrefs(p => ({ ...p, [key]: val }));
-
-  const handleSave = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
-  };
-
-  const Toggle = ({ field }) => (
+function NotifToggle({ field, prefs, onToggle }) {
+  return (
     <div
-      onClick={() => toggle(field)}
+      onClick={() => onToggle(field)}
       style={{
         width: '36px', height: '20px', borderRadius: '10px', flexShrink: 0,
         background: prefs[field] ? 'var(--green)' : 'var(--surface3)',
@@ -218,8 +219,10 @@ function NotificationsTab() {
       }} />
     </div>
   );
+}
 
-  const Row = ({ label, toggleKey, phoneKey }) => (
+function NotifRow({ label, toggleKey, phoneKey, prefs, onToggle, onField }) {
+  return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: '13px', fontWeight: '500' }}>{label}</div>
@@ -227,24 +230,47 @@ function NotificationsTab() {
           <input
             type="tel"
             value={prefs[phoneKey]}
-            onChange={e => setField(phoneKey, e.target.value)}
+            onChange={e => onField(phoneKey, e.target.value)}
             placeholder="+1 416 555 0100"
             style={{ marginTop: '8px', maxWidth: '220px' }}
           />
         )}
       </div>
-      <Toggle field={toggleKey} />
+      <NotifToggle field={toggleKey} prefs={prefs} onToggle={onToggle} />
     </div>
   );
+}
+
+function NotificationsTab() {
+  // NOTE: Backend does not yet have a /api/notifications endpoint.
+  // Notification preferences are saved to localStorage for now.
+  const [prefs, setPrefs] = useState(() => {
+    try {
+      const stored = localStorage.getItem(NOTIF_STORAGE_KEY);
+      return stored ? { ...NOTIF_DEFAULT_PREFS, ...JSON.parse(stored) } : NOTIF_DEFAULT_PREFS;
+    } catch {
+      return NOTIF_DEFAULT_PREFS;
+    }
+  });
+  const [saved, setSaved] = useState(false);
+
+  const toggle = (key) => setPrefs(p => ({ ...p, [key]: !p[key] }));
+  const setField = (key, val) => setPrefs(p => ({ ...p, [key]: val }));
+
+  const handleSave = () => {
+    localStorage.setItem(NOTIF_STORAGE_KEY, JSON.stringify(prefs));
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
+  };
 
   return (
     <div style={{ maxWidth: '560px' }}>
       <Card>
         <CardHeader><CardTitle>WhatsApp notifications</CardTitle></CardHeader>
         <CardBody>
-          <Row label="Morning briefing (7am daily)" toggleKey="morning_briefing" phoneKey="morning_phone" />
-          <Row label="End-of-day summary (6pm daily)" toggleKey="eod_summary" phoneKey="eod_phone" />
-          <Row label="New lead alert (instant)" toggleKey="new_lead_alert" phoneKey="new_lead_phone" />
+          <NotifRow label="Morning briefing (7am daily)" toggleKey="morning_briefing" phoneKey="morning_phone" prefs={prefs} onToggle={toggle} onField={setField} />
+          <NotifRow label="End-of-day summary (6pm daily)" toggleKey="eod_summary" phoneKey="eod_phone" prefs={prefs} onToggle={toggle} onField={setField} />
+          <NotifRow label="New lead alert (instant)" toggleKey="new_lead_alert" phoneKey="new_lead_phone" prefs={prefs} onToggle={toggle} onField={setField} />
           <div style={{ padding: '12px 0', borderBottom: 'none' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '8px' }}>Appointment reminders</div>
             {[
@@ -254,7 +280,7 @@ function NotificationsTab() {
             ].map(r => (
               <div key={r.key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0' }}>
                 <span style={{ fontSize: '13px', color: 'var(--text2)' }}>{r.label}</span>
-                <Toggle field={r.key} />
+                <NotifToggle field={r.key} prefs={prefs} onToggle={toggle} />
               </div>
             ))}
           </div>
@@ -272,7 +298,7 @@ function NotificationsTab() {
 }
 
 function BillingTab({ user }) {
-  const currentPlan = user?.plan || 'starter';
+  const currentPlan = user?.subscription_tier || user?.plan || 'starter';
 
   return (
     <div style={{ maxWidth: '720px' }}>
@@ -295,8 +321,8 @@ function BillingTab({ user }) {
                   Current plan
                 </div>
               )}
-              <div style={{ fontFamily: "'Clash Display', sans-serif", fontSize: '16px', fontWeight: '600', color: isCurrent ? '#fff' : 'var(--text)', marginBottom: '4px' }}>{plan.name}</div>
-              <div style={{ fontFamily: "'Clash Display', sans-serif", fontSize: '32px', fontWeight: '700', color: isCurrent ? '#fff' : 'var(--text)', margin: '8px 0 4px' }}>
+              <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '16px', fontWeight: '600', color: isCurrent ? '#fff' : 'var(--text)', marginBottom: '4px' }}>{plan.name}</div>
+              <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '32px', fontWeight: '700', color: isCurrent ? '#fff' : 'var(--text)', margin: '8px 0 4px' }}>
                 <sup style={{ fontSize: '16px', verticalAlign: 'top', marginTop: '8px', display: 'inline-block' }}>$</sup>{plan.price}
               </div>
               <div style={{ fontSize: '12px', color: isCurrent ? 'rgba(255,255,255,.55)' : 'var(--text3)', marginBottom: '14px' }}>per month</div>
@@ -309,18 +335,137 @@ function BillingTab({ user }) {
                 ))}
               </ul>
               {!isCurrent && (
-                <button
+                <a
+                  href="mailto:support@matchit.ai?subject=Plan upgrade request"
                   className="btn btn-ghost btn-sm btn-full"
-                  onClick={() => alert(`Upgrade to ${plan.name} coming soon. Contact support to change your plan.`)}
-                  style={isCurrent ? { background: 'rgba(255,255,255,.12)', color: '#fff', borderColor: 'rgba(255,255,255,.2)' } : {}}
+                  style={{ display: 'block', textAlign: 'center', textDecoration: 'none', color: 'var(--text2)' }}
                 >
                   Upgrade to {plan.name}
-                </button>
+                </a>
               )}
             </div>
           );
         })}
       </div>
+      <div style={{ marginTop: '14px', fontSize: '12px', color: 'var(--text3)', lineHeight: 1.6 }}>
+        Plan changes are processed manually. Email <a href="mailto:support@matchit.ai" style={{ color: 'var(--blue)' }}>support@matchit.ai</a> to upgrade, downgrade, or cancel your subscription.
+        Self-serve billing portal is on the roadmap.
+      </div>
+    </div>
+  );
+}
+
+function AccountTab({ user }) {
+  const [confirmText, setConfirmText] = useState('');
+  const [showDanger, setShowDanger] = useState(false);
+  const tier = user?.subscription_tier || user?.plan || 'starter';
+
+  return (
+    <div style={{ maxWidth: '560px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {/* Workspace overview */}
+      <Card>
+        <CardHeader><CardTitle>Workspace</CardTitle></CardHeader>
+        <CardBody>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px' }}>
+            {[
+              { label: 'Business name', value: user?.business_name || '—' },
+              { label: 'Owner email',   value: user?.email || '—' },
+              { label: 'Industry',      value: user?.industry || '—' },
+              { label: 'Plan',          value: tier.charAt(0).toUpperCase() + tier.slice(1) },
+            ].map(({ label, value }) => (
+              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', padding: '8px 0', borderBottom: '1px solid var(--surface3)' }}>
+                <span style={{ color: 'var(--text3)' }}>{label}</span>
+                <span style={{ fontWeight: '500', textAlign: 'right' }}>{value}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text3)' }}>
+            To update these details, go to the Profile tab.
+          </div>
+        </CardBody>
+      </Card>
+
+      {/* Data & privacy */}
+      <Card>
+        <CardHeader><CardTitle>Data & privacy</CardTitle></CardHeader>
+        <CardBody>
+          <p style={{ fontSize: '13px', color: 'var(--text2)', margin: '0 0 12px', lineHeight: 1.7 }}>
+            Matchit stores your business data, leads, conversations, and job history securely in our cloud database with row-level security. Your data is never shared with other businesses.
+          </p>
+          <a
+            href="mailto:support@matchit.ai?subject=Data export request"
+            className="btn btn-ghost btn-sm"
+            style={{ textDecoration: 'none', display: 'inline-block' }}
+          >
+            Request data export
+          </a>
+          <div style={{ fontSize: '11px', color: 'var(--text3)', marginTop: '8px', lineHeight: 1.5 }}>
+            Data exports are processed manually within 5 business days. You will receive a download link at your account email.
+          </div>
+        </CardBody>
+      </Card>
+
+      {/* Danger zone */}
+      <Card style={{ border: '1px solid #fecaca' }}>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--red)' }}>Danger zone</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <p style={{ fontSize: '13px', color: 'var(--text2)', margin: '0 0 14px', lineHeight: 1.7 }}>
+            Closing your account permanently deletes all your business data, leads, conversations, jobs, estimates, and team members. <strong>This cannot be undone.</strong>
+          </p>
+          {!showDanger ? (
+            <button
+              className="btn btn-ghost btn-sm"
+              style={{ color: 'var(--red)', borderColor: '#fecaca' }}
+              onClick={() => setShowDanger(true)}
+            >
+              Close account…
+            </button>
+          ) : (
+            <div style={{ background: '#fff5f5', border: '1px solid #fecaca', borderRadius: 'var(--r)', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--red)' }}>
+                ⚠ This will permanently delete your workspace
+              </div>
+              <div style={{ fontSize: '13px', color: 'var(--text2)', lineHeight: 1.6 }}>
+                To confirm, type <strong>DELETE MY ACCOUNT</strong> below:
+              </div>
+              <input
+                value={confirmText}
+                onChange={e => setConfirmText(e.target.value)}
+                placeholder="DELETE MY ACCOUNT"
+                style={{ borderColor: '#fecaca' }}
+              />
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  className="btn btn-sm"
+                  style={{
+                    background: confirmText === 'DELETE MY ACCOUNT' ? 'var(--red)' : 'var(--surface3)',
+                    color: confirmText === 'DELETE MY ACCOUNT' ? '#fff' : 'var(--text3)',
+                    border: 'none',
+                    cursor: confirmText === 'DELETE MY ACCOUNT' ? 'pointer' : 'not-allowed',
+                  }}
+                  disabled={confirmText !== 'DELETE MY ACCOUNT'}
+                  onClick={() => {
+                    window.location.href = 'mailto:support@matchit.ai?subject=Account deletion request&body=Business name: ' + encodeURIComponent(user?.business_name || '');
+                  }}
+                >
+                  Send deletion request
+                </button>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  onClick={() => { setShowDanger(false); setConfirmText(''); }}
+                >
+                  Cancel
+                </button>
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text3)', lineHeight: 1.5 }}>
+                This will open your email client with a pre-filled deletion request. Our team processes deletions within 24 hours to protect against unauthorized requests.
+              </div>
+            </div>
+          )}
+        </CardBody>
+      </Card>
     </div>
   );
 }
@@ -330,27 +475,21 @@ export function Settings() {
   const { user } = useAuth();
 
   return (
-    <div className="page active" id="p-settings" style={{ padding: '0' }}>
-      <div style={{ padding: '22px 24px' }}>
-        {/* Tab bar */}
-        <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: '1px solid var(--border)', paddingBottom: '0' }}>
+    <div className="page active surface-page settings-page" id="p-settings">
+      <PageHero
+        className="settings-hero"
+        eyebrow="Workspace control"
+        title="Settings"
+        subtitle="Keep your business profile, channels, notifications, billing context, and account controls in one consistent place."
+        stat={{ value: TABS.length, label: 'configuration areas' }}
+      />
+
+        <div className="settings-tabs">
           {TABS.map(t => (
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              style={{
-                padding: '8px 16px',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                background: 'none',
-                border: 'none',
-                borderBottom: tab === t.key ? '2px solid var(--text)' : '2px solid transparent',
-                color: tab === t.key ? 'var(--text)' : 'var(--text2)',
-                fontFamily: "'Satoshi', sans-serif",
-                marginBottom: '-1px',
-                transition: 'color .15s',
-              }}
+              className={`settings-tab${tab === t.key ? ' active' : ''}`}
             >
               {t.label}
             </button>
@@ -361,7 +500,7 @@ export function Settings() {
         {tab === 'channels'      && <ChannelsTab />}
         {tab === 'notifications' && <NotificationsTab />}
         {tab === 'billing'       && <BillingTab user={user} />}
-      </div>
+        {tab === 'account'       && <AccountTab user={user} />}
     </div>
   );
 }

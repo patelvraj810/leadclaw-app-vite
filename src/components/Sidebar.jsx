@@ -1,168 +1,105 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-  LayoutDashboard,
-  Users,
-  MessageSquare,
-  LineChart,
-  Cpu,
-  Plug,
-  Globe,
-  Send,
-  Calendar,
-  Settings,
-  DollarSign,
-  X,
+  LayoutDashboard, Users, MessageSquare, LineChart,
+  Cpu, Plug, Globe, Send, Calendar, Settings,
+  DollarSign, FileText, UserCheck, Briefcase, Receipt, X,
 } from 'lucide-react';
+
+const NAV_GROUPS = [
+  {
+    label: 'Operations',
+    items: [
+      { to: '/app/dashboard',     icon: LayoutDashboard, label: 'Dashboard',     statsKey: null },
+      { to: '/app/leads',         icon: Users,           label: 'Leads',         statsKey: 'totalLeads' },
+      { to: '/app/conversations', icon: MessageSquare,   label: 'Inbox',         statsKey: 'totalConversations' },
+      { to: '/app/jobs',          icon: Calendar,        label: 'Jobs',          statsKey: null },
+      { to: '/app/estimates',     icon: FileText,        label: 'Estimates',     statsKey: null },
+      { to: '/app/invoices',      icon: Receipt,         label: 'Invoices',      statsKey: null },
+      { to: '/app/field',         icon: Briefcase,       label: 'Field',         statsKey: null },
+      { to: '/app/team',          icon: UserCheck,       label: 'Team',          statsKey: null },
+      { to: '/app/analytics',     icon: LineChart,       label: 'Analytics',     statsKey: null },
+    ],
+  },
+  {
+    label: 'Growth',
+    items: [
+      { to: '/app/sources',   icon: Globe, label: 'Lead Sources', statsKey: null },
+      { to: '/app/campaigns', icon: Send,  label: 'Campaigns',    statsKey: null },
+    ],
+  },
+  {
+    label: 'Config',
+    items: [
+      { to: '/app/agent',        icon: Cpu,        label: 'AI Agent',    statsKey: null },
+      { to: '/app/pricebook',    icon: DollarSign, label: 'Price Book',  statsKey: null },
+      { to: '/app/integrations', icon: Plug,       label: 'Integrations',statsKey: null },
+      { to: '/app/settings',     icon: Settings,   label: 'Settings',    statsKey: null },
+    ],
+  },
+];
 
 export function Sidebar({ isOpen, onClose, stats }) {
   const { user } = useAuth();
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'U';
-  const userName = user?.name || 'New User';
-  const userPlan = user?.plan ? (user.plan.charAt(0).toUpperCase() + user.plan.slice(1) + ' Plan') : 'Starter Plan';
+  const userName    = user?.name || 'New User';
+  const rawPlan     = user?.subscription_tier || user?.plan || 'starter';
+  const userPlan    = rawPlan.charAt(0).toUpperCase() + rawPlan.slice(1) + ' Plan';
 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+      {/* Brand */}
       <div className="sb-logo">
         <div className="sb-logo-mark">
-          <div className="logo-dot"></div>
+          <div className="logo-dot" />
         </div>
         <div className="sb-brand">
           <span className="sb-logo-text">Matchit</span>
-          <span className="sb-logo-sub">AI sales command</span>
+          <span className="sb-logo-sub">Service OS</span>
         </div>
         <span className="sb-version">LIVE</span>
-        <button
-          className="menu-toggle"
-          onClick={onClose}
-        >
-          <X size={18} />
+        <button className="menu-toggle" onClick={onClose} style={{ marginLeft: '4px' }}>
+          <X size={16} />
         </button>
       </div>
 
-      <div className="sb-nav">
-        <div className="sb-section">Overview</div>
+      {/* Nav */}
+      <nav className="sb-nav">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            <div className="sb-section">{group.label}</div>
+            {group.items.map(({ to, icon: Icon, label, statsKey }) => {
+              const count = statsKey && stats?.[statsKey];
+              return (
+                <NavLink
+                  key={to}
+                  to={to}
+                  onClick={onClose}
+                  className={({ isActive }) => `nb${isActive ? ' active' : ''}`}
+                >
+                  <Icon size={15} strokeWidth={1.6} />
+                  {label}
+                  {count ? <span className="nb-badge">{count}</span> : null}
+                </NavLink>
+              );
+            })}
+          </div>
+        ))}
+      </nav>
 
-        <NavLink
-          to="/app/dashboard"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <LayoutDashboard size={15} strokeWidth={1.5} />
-          Dashboard
-        </NavLink>
-
-        <NavLink
-          to="/app/leads"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Users size={15} strokeWidth={1.5} />
-          Leads {stats?.totalLeads ? <span className="nb-badge">{stats.totalLeads}</span> : null}
-        </NavLink>
-
-        <NavLink
-          to="/app/conversations"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <MessageSquare size={15} strokeWidth={1.5} />
-          Conversations {stats?.totalConversations ? <span className="nb-badge">{stats.totalConversations}</span> : null}
-        </NavLink>
-
-        <NavLink
-          to="/app/analytics"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <LineChart size={15} strokeWidth={1.5} />
-          Analytics
-        </NavLink>
-
-        <NavLink
-          to="/app/jobs"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Calendar size={15} strokeWidth={1.5} />
-          Jobs
-        </NavLink>
-
-        <div className="sb-section">Lead Generation</div>
-
-        <NavLink
-          to="/app/sources"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Globe size={15} strokeWidth={1.5} />
-          Lead Sources
-        </NavLink>
-
-        <NavLink
-          to="/app/campaigns"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Send size={15} strokeWidth={1.5} />
-          Campaigns
-        </NavLink>
-
-        <div className="sb-section">Configuration</div>
-
-        <NavLink
-          to="/app/agent"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Cpu size={15} strokeWidth={1.5} />
-          AI Agent
-        </NavLink>
-
-        <NavLink
-          to="/app/integrations"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Plug size={15} strokeWidth={1.5} />
-          Integrations
-        </NavLink>
-
-        <NavLink
-          to="/app/pricebook"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <DollarSign size={15} strokeWidth={1.5} />
-          Price Book
-        </NavLink>
-
-        <NavLink
-          to="/app/settings"
-          onClick={onClose}
-          className={({ isActive }) => `nb ${isActive ? 'active' : ''}`}
-        >
-          <Settings size={15} strokeWidth={1.5} />
-          Settings
-        </NavLink>
-      </div>
-
+      {/* Bottom */}
       <div className="sb-bottom">
-        <NavLink
-          to="/"
-          onClick={onClose}
-          className="nb mobile-only"
-          style={{ marginBottom: '12px', border: '1px solid var(--border)', background: 'var(--surface2)' }}
-        >
+        <NavLink to="/" onClick={onClose} className="nb nb-secondary mobile-only" style={{ marginBottom: '10px' }}>
           <Globe size={15} strokeWidth={1.5} />
-          Back to Website
+          Back to site
         </NavLink>
+
         <div className="sb-metric">
           <div className="sb-metric-label">Pipeline this week</div>
           <div className="sb-metric-value">{stats?.totalLeads ?? 0}</div>
-          <div className="sb-metric-sub">Live lead flow across all channels</div>
+          <div className="sb-metric-sub">Active leads across all channels</div>
         </div>
+
         <div className="user-pill">
           <div className="u-av">{userInitial}</div>
           <div>

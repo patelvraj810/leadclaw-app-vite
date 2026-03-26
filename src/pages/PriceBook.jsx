@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { fetchPricebook, createPricebookItem, updatePricebookItem, deletePricebookItem } from '../lib/api';
 import { Tag } from '../components/ui/Tag';
 import { Card, CardHeader, CardTitle, CardBody } from '../components/ui/Card';
@@ -18,6 +18,10 @@ const EMPTY_FORM = {
 export function PriceBook() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('All');
+  const [statusFilter, setStatusFilter] = useState('All');
+  const [sortBy, setSortBy] = useState('name');
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [submitting, setSubmitting] = useState(false);
@@ -37,8 +41,36 @@ export function PriceBook() {
       .finally(() => setLoading(false));
   }, []);
 
-  const grouped = CATEGORIES.reduce((acc, cat) => {
-    acc[cat] = items.filter(i => i.category === cat);
+  const filteredItems = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    return items
+      .filter((item) => {
+        const matchesCategory = categoryFilter === 'All' || item.category === categoryFilter;
+        const matchesStatus = statusFilter === 'All'
+          || (statusFilter === 'Active' ? item.is_active !== false : item.is_active === false);
+        if (!normalizedQuery) return matchesCategory && matchesStatus;
+        const haystack = [
+          item.name,
+          item.description,
+          item.category,
+          item.unit,
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        return matchesCategory && matchesStatus && haystack.includes(normalizedQuery);
+      })
+      .sort((left, right) => {
+        if (sortBy === 'price_desc') return Number(right.unit_price || 0) - Number(left.unit_price || 0);
+        if (sortBy === 'price_asc') return Number(left.unit_price || 0) - Number(right.unit_price || 0);
+        if (sortBy === 'recent') return new Date(right.created_at || 0) - new Date(left.created_at || 0);
+        return (left.name || '').localeCompare(right.name || '');
+      });
+  }, [items, query, categoryFilter, statusFilter, sortBy]);
+
+  const grouped = CATEGORIES.reduce((acc, category) => {
+    acc[category] = filteredItems.filter((item) => item.category === category);
     return acc;
   }, {});
 
@@ -122,16 +154,52 @@ export function PriceBook() {
       <div style={{ padding: '22px 24px' }}>
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-          <div style={{ fontSize: '13px', color: 'var(--text3)' }}>
-            {items.length} item{items.length !== 1 ? 's' : ''} in your price book
+        <section className="page-hero">
+          <div>
+            <div className="page-eyebrow">Pricing system</div>
+            <h1 className="page-title">Keep your services, labor, and pricing ready for every quote.</h1>
+            <p className="page-subtitle">
+              Matchit uses your price book across estimates, invoices, and AI-assisted quoting, so this should stay clean and searchable.
+            </p>
           </div>
-          <button
-            className="btn btn-dark btn-sm"
-            onClick={() => { cancelForm(); setShowForm(v => !v); }}
-          >
-            {showForm && !editId ? '✕ Cancel' : '+ Add item'}
-          </button>
+          <div className="page-stat-chip">
+            <strong>{filteredItems.length}</strong>
+            <span>{filteredItems.length === items.length ? 'visible items' : `filtered from ${items.length}`}</span>
+          </div>
+        </section>
+
+        <div className="toolbar-shell pb-toolbar">
+          <div className="srch" style={{ minWidth: '240px' }}>
+            <input
+              type="text"
+              placeholder="Search services, parts, descriptions"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)} style={{ width: 'auto', minWidth: '140px' }}>
+              <option value="All">All categories</option>
+              {CATEGORIES.map((category) => <option key={category} value={category}>{category}</option>)}
+            </select>
+            <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} style={{ width: 'auto', minWidth: '120px' }}>
+              <option value="All">All status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <select value={sortBy} onChange={(event) => setSortBy(event.target.value)} style={{ width: 'auto', minWidth: '145px' }}>
+              <option value="name">Sort: Name</option>
+              <option value="recent">Sort: Recent</option>
+              <option value="price_desc">Sort: Highest price</option>
+              <option value="price_asc">Sort: Lowest price</option>
+            </select>
+            <button
+              className="btn btn-dark btn-sm"
+              onClick={() => { cancelForm(); setShowForm(v => !v); }}
+            >
+              {showForm && !editId ? '✕ Cancel' : '+ Add item'}
+            </button>
+          </div>
         </div>
 
         {/* Add / Edit form */}
@@ -199,6 +267,12 @@ export function PriceBook() {
           <div className="empty-state" style={{ padding: '60px 24px', textAlign: 'center' }}>
             <div style={{ fontSize: '13px', color: 'var(--text3)', maxWidth: '420px', margin: '0 auto', lineHeight: 1.7 }}>
               No items yet. Add your services and prices here. Your AI will reference these when discussing pricing with leads.
+            </div>
+          </div>
+        ) : filteredItems.length === 0 ? (
+          <div className="empty-state" style={{ padding: '60px 24px', textAlign: 'center' }}>
+            <div style={{ fontSize: '13px', color: 'var(--text3)', maxWidth: '420px', margin: '0 auto', lineHeight: 1.7 }}>
+              No price book items match these filters. Try widening the search or clearing the status/category filters.
             </div>
           </div>
         ) : (

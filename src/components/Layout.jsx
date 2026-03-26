@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
-import { fetchLeads, fetchConversations, fetchStats, submitFindRequest } from '../lib/api';
+import { fetchStats } from '../lib/api';
 import { getUser } from '../lib/auth';
 
 export function Layout() {
@@ -22,7 +22,7 @@ export function Layout() {
           totalLeads: data?.totalLeads || 0,
           totalConversations: data?.totalConversations || 0,
         });
-      } catch (e) {
+      } catch {
         // silently fail - stats are optional
       }
     }

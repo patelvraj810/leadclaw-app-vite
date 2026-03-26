@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { completeOnboarding } from '../lib/api';
@@ -223,7 +223,7 @@ export function Onboarding() {
           )}
 
           {step === 1 && <StepBusiness form={form} set={set} user={user} />}
-          {step === 2 && <StepServices form={form} set={set} addService={addService} removeService={removeService} handleServiceKeyDown={handleServiceKeyDown} />}
+          {step === 2 && <StepServices form={form} set={set} removeService={removeService} handleServiceKeyDown={handleServiceKeyDown} />}
           {step === 3 && <StepAgent form={form} set={set} openingPreview={openingPreview} />}
           {step === 4 && <StepKnowledge form={form} set={set} />}
           {step === 5 && <StepHours form={form} set={set} setHour={setHour} />}
@@ -347,7 +347,7 @@ function StepBusiness({ form, set, user }) {
 }
 
 // ---- Step 2: Services ----
-function StepServices({ form, set, addService, removeService, handleServiceKeyDown }) {
+function StepServices({ form, set, removeService, handleServiceKeyDown }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div className="field">
@@ -667,7 +667,7 @@ function StepGoLive({ form, set, openingPreview }) {
                   <span style={{ background: 'var(--green)', color: '#fff', fontSize: '9px', padding: '2px 7px', borderRadius: '10px', fontWeight: '700' }}>Popular</span>
                 )}
               </div>
-              <span style={{ fontFamily: "'Clash Display', sans-serif", fontSize: '20px', fontWeight: '700' }}>
+              <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '20px', fontWeight: '700' }}>
                 {plan.price}<span style={{ fontSize: '11px', fontWeight: '400', color: 'var(--text3)' }}>/mo</span>
               </span>
             </div>

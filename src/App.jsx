@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -8,6 +7,8 @@ import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { Onboarding } from './pages/Onboarding';
+import { PublicEstimate } from './pages/PublicEstimate';
+import { AcceptInvite } from './pages/AcceptInvite';
 import { Dashboard } from './pages/Dashboard';
 import { Leads } from './pages/Leads';
 import { Conversations } from './pages/Conversations';
@@ -20,6 +21,10 @@ import { Find } from './pages/Find';
 import { Jobs } from './pages/Jobs';
 import { Settings } from './pages/Settings';
 import { PriceBook } from './pages/PriceBook';
+import { Estimates } from './pages/Estimates';
+import { Team } from './pages/Team';
+import { Field } from './pages/Field';
+import { Invoices } from './pages/Invoices';
 
 // Layout
 import { Layout } from './components/Layout';
@@ -30,8 +35,10 @@ function AppRoutes() {
       {/* Public routes */}
       <Route path="/" element={<Landing />} />
       <Route path="/find" element={<Find />} />
+      <Route path="/estimate/:token" element={<PublicEstimate />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/accept-invite" element={<AcceptInvite />} />
 
       {/* Protected routes */}
       <Route
@@ -54,6 +61,10 @@ function AppRoutes() {
         <Route path="jobs" element={<Jobs />} />
         <Route path="settings" element={<Settings />} />
         <Route path="pricebook" element={<PriceBook />} />
+        <Route path="estimates" element={<Estimates />} />
+        <Route path="team" element={<Team />} />
+        <Route path="field" element={<Field />} />
+        <Route path="invoices" element={<Invoices />} />
       </Route>
 
       {/* Onboarding — protected but outside main app layout */}
@@ -75,6 +86,9 @@ function AppRoutes() {
       <Route path="/campaigns" element={<Navigate to="/app/campaigns" replace />} />
       <Route path="/jobs" element={<Navigate to="/app/jobs" replace />} />
       <Route path="/settings" element={<Navigate to="/app/settings" replace />} />
+      <Route path="/estimates" element={<Navigate to="/app/estimates" replace />} />
+      <Route path="/team" element={<Navigate to="/app/team" replace />} />
+      <Route path="/invoices" element={<Navigate to="/app/invoices" replace />} />
     </Routes>
   );
 }
