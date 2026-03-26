@@ -16,6 +16,7 @@ export function Layout() {
       try {
         const data = await fetchStats();
         const user = getUser();
+        // Sidebar/topbar only need a small stitched view of user + headline stats.
         setStats({
           ...data,
           userName: user?.name || user?.businessName || 'New User',
@@ -38,7 +39,7 @@ export function Layout() {
       <Sidebar isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} stats={stats} />
       <main className="app-main">
         <Topbar toggleMenu={toggleMenu} isOpen={isMenuOpen} />
-        <div style={{ padding: '0' }}>
+        <div>
           <Outlet context={{ toggleMenu, isMenuOpen, setIsMenuOpen }} />
         </div>
       </main>

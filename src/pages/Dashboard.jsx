@@ -68,11 +68,6 @@ export function Dashboard() {
     return leads;
   }, [focus, leads]);
 
-  useEffect(() => {
-    if (!filteredLeads.length) { setSelectedLeadId(null); return; }
-    if (!filteredLeads.some(l => l.id === selectedLeadId)) setSelectedLeadId(filteredLeads[0].id);
-  }, [filteredLeads, selectedLeadId]);
-
   const selectedLead = filteredLeads.find(l => l.id === selectedLeadId) || filteredLeads[0] || null;
   const selectedStatus = STATUS_MAP[selectedLead?.qualification_status] || { label: 'New', color: 'purple' };
 

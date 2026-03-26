@@ -10,13 +10,13 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function checkAuth() {
       if (isAuthenticated()) {
-        // verifyAuth hits /auth/me. If token is invalid or expired it clears storage
-        // and returns null. Never fall back to stale localStorage user data.
+        // verifyAuth hits /auth/me. If the token is invalid or expired it clears
+        // storage and returns null. Never fall back to stale localStorage data.
         const verifiedUser = await verifyAuth();
         if (verifiedUser) {
           setUser(verifiedUser);
         }
-        // If verifiedUser is null, session was cleared by verifyAuth — stay logged out
+        // If verifiedUser is null, verifyAuth already cleared the stale session.
       }
       setLoading(false);
     }

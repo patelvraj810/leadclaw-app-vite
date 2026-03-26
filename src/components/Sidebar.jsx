@@ -68,17 +68,18 @@ export function Sidebar({ isOpen, onClose, stats }) {
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
             <div className="sb-section">{group.label}</div>
-            {group.items.map(({ to, icon: Icon, label, statsKey }) => {
-              const count = statsKey && stats?.[statsKey];
+            {group.items.map((item) => {
+              const ItemIcon = item.icon;
+              const count = item.statsKey && stats?.[item.statsKey];
               return (
                 <NavLink
-                  key={to}
-                  to={to}
+                  key={item.to}
+                  to={item.to}
                   onClick={onClose}
                   className={({ isActive }) => `nb${isActive ? ' active' : ''}`}
                 >
-                  <Icon size={15} strokeWidth={1.6} />
-                  {label}
+                  <ItemIcon size={15} strokeWidth={1.6} />
+                  {item.label}
                   {count ? <span className="nb-badge">{count}</span> : null}
                 </NavLink>
               );

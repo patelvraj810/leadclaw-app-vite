@@ -4,6 +4,14 @@ function getToken() {
   return localStorage.getItem('matchit_token');
 }
 
+async function parseApiError(response) {
+  const err = await response.json().catch(() => ({ error: response.statusText }));
+  return Object.assign(new Error(err.error || 'Request failed'), {
+    status: response.status,
+    data: err,
+  });
+}
+
 async function apiFetch(path, options = {}) {
   const token = getToken();
   const headers = {
@@ -13,8 +21,7 @@ async function apiFetch(path, options = {}) {
   };
   const res = await fetch(`${API_URL}${path}`, { ...options, headers });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: res.statusText }));
-    throw Object.assign(new Error(err.error || 'Request failed'), { status: res.status, data: err });
+    throw await parseApiError(res);
   }
   return res.json();
 }
@@ -26,23 +33,27 @@ async function publicApiFetch(path, options = {}) {
   };
   const res = await fetch(`${API_URL}${path}`, { ...options, headers });
   if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: res.statusText }));
-    throw Object.assign(new Error(err.error || 'Request failed'), { status: res.status, data: err });
+    throw await parseApiError(res);
   }
   return res.json();
 }
 
+// Core CRM + dashboard
 export const fetchLeads = () => apiFetch('/api/leads');
 export const fetchConversations = () => apiFetch('/api/conversations');
 export const fetchStats = () => apiFetch('/api/stats');
 export const fetchMessages = (conversationId) => apiFetch(`/api/messages/${conversationId}`);
 export const sendMessage = (conversationId, content) => apiFetch(`/api/messages/${conversationId}`, { method: 'POST', body: JSON.stringify({ content }) });
 export const fetchAnalytics = () => apiFetch('/api/analytics');
+
+// Jobs
 export const fetchJobs = (params = {}) => apiFetch(`/api/jobs?${new URLSearchParams(params)}`);
 export const fetchJob = (id) => apiFetch(`/api/jobs/${id}`);
 export const createJob = (data) => apiFetch('/api/jobs', { method: 'POST', body: JSON.stringify(data) });
 export const updateJob = (id, data) => apiFetch(`/api/jobs/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
 export const completeJob = (id, data = {}) => apiFetch(`/api/jobs/${id}/complete`, { method: 'POST', body: JSON.stringify(data) });
+
+// Agent, channels, and onboarding
 export const fetchAgentSettings = () => apiFetch('/api/agent-settings');
 export const saveAgentSettings = (data) => apiFetch('/api/agent-settings', { method: 'POST', body: JSON.stringify(data) });
 export const fetchPricebook = () => apiFetch('/api/pricebook');

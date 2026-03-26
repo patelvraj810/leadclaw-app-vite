@@ -29,6 +29,8 @@ import { Invoices } from './pages/Invoices';
 // Layout
 import { Layout } from './components/Layout';
 
+// Central route map for both public marketplace surfaces and the protected
+// service-provider operating system.
 function AppRoutes() {
   return (
     <Routes>

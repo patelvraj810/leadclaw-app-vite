@@ -15,7 +15,7 @@ export function AcceptInvite() {
   const token           = searchParams.get('token');
 
   const [preview,     setPreview]     = useState(null);
-  const [inviteState, setInviteState] = useState('loading'); // loading | valid | expired | accepted | revoked | not_found
+  const [inviteState, setInviteState] = useState(token ? 'loading' : 'not_found'); // loading | valid | expired | accepted | revoked | not_found
   const [stateMsg,    setStateMsg]    = useState('');
 
   const [name,        setName]        = useState('');
@@ -24,10 +24,7 @@ export function AcceptInvite() {
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    if (!token) {
-      setInviteState('not_found');
-      return;
-    }
+    if (!token) return;
     getInvitePreview(token)
       .then(data => {
         setPreview(data);
@@ -61,7 +58,8 @@ export function AcceptInvite() {
     }
   };
 
-  // ── Shell ──────────────────────────────────────────────────────────────────
+  // Keep the public invite flow self-contained so invited teammates can land
+  // directly in the accept experience without seeing the provider shell first.
   return (
     <div style={{
       minHeight: '100vh', background: 'var(--bg)',

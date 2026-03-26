@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Tag } from '../components/ui/Tag';
 import { PageHero } from '../components/ui/PageHero';
-import { fetchIntegrations, seedIntegrations, updateIntegration, disconnectIntegration } from '../lib/api';
+import { fetchIntegrations, seedIntegrations, disconnectIntegration } from '../lib/api';
 
 // Static catalog — defines setup notes and metadata.
 // Actual connection status is merged from the backend at runtime.
